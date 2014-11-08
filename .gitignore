@@ -1,1 +1,4 @@
 /Temp
+/Assets/*.meta
+/Assets/Grsphic/*.meta
+/Assets/Grsphic/Frames/*.meta

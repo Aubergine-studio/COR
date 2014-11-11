@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Sounds\Music\NewBehaviourScript2.cs">
+    <Files>
+      <File FileName="Assets\Scripts\CameraTracking.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerControl.cs" Line="18" Column="56" />
+      <File FileName="Assets\Sounds\Music\NewBehaviourScript2.cs" Line="4" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="F:\Unity\LAG\Assets\Graphics\Towns\Scripts\Enemies\EnemyControl.cs" line="36" />
+      <Breakpoint file="F:\Unity\LAG\Assets\Graphics\Towns\Scripts\Enemies\EnemyControl.cs" line="30" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

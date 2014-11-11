@@ -3,11 +3,19 @@ using System.Collections;
 
 public class PlayerControl : MonoBehaviour
 {
+	/*
+	 * Parametry zachowania postaci.
+	 */
+
     public float maxSpeed = 10f;
-    public Camera mainCamera;
-    private bool facingRight = true;
-    
-    private Animator _animator;
+	public float jumpForce = 400f;
+
+	/*
+	 * Kontrola animatora postaci. 
+	 */
+
+	private bool facingRight = true;	//	Obracanie postaci.
+    private Animator _animator;			//	Animator postaci. 
 
     // Use this for initialization
     void Start()
@@ -17,28 +25,25 @@ public class PlayerControl : MonoBehaviour
     
     void Update()
     {
-        mainCamera.transform.localPosition = new Vector3 (this.transform.localPosition.x, this.transform.localPosition.y, mainCamera.transform.localPosition.z) ;
-
+		if (Input.GetKey(KeyCode.JoystickButton0)) 
+		{
+			rigidbody2D.AddForce(new Vector2(0, jumpForce));
+		}
     }
 
     void FixedUpdate()
     {
         float move = Input.GetAxis("Horizontal");
 
-	//	Debug.Log ("Horizontal input: " + move);
         rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
 
        _animator.SetFloat("Speed",Mathf.Abs(move));
 
         if (move < 0 && !facingRight)
-        {
             this.Flip();
-        }
         else
-        {
             if(move > 0 && facingRight)
                 this.Flip();
-        }
     }
 
     void Flip()

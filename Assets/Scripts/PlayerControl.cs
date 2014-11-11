@@ -24,7 +24,8 @@ public class PlayerControl : MonoBehaviour
     void FixedUpdate()
     {
         float move = Input.GetAxis("Horizontal");
-        System.Console.WriteLine(move);
+
+	//	Debug.Log ("Horizontal input: " + move);
         rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
 
        _animator.SetFloat("Speed",Mathf.Abs(move));

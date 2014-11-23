@@ -47,7 +47,7 @@ public class PlayerControl : Character
         }
 
         AnimatorStateInfo a = animator.GetCurrentAnimatorStateInfo(0);
-
+		
         if (grounded && !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
         {
             Move();
@@ -69,7 +69,7 @@ public class PlayerControl : Character
         animator.SetBool ("Ground", grounded);
         animator.SetBool ("Fire", inputMenager.fire);
 
-        animator.SetFloat ("Attack", attack);
+		animator.SetFloat ("Attack", inputMenager.attack);
         animator.SetFloat ("vSpeed", rigidbody2D.velocity.y);
 		animator.SetFloat ("Speed", Mathf.Abs(inputMenager.horizontalInput));
 
@@ -91,6 +91,7 @@ public class PlayerControl : Character
     void Attack()
     {
         rigidbody2D.velocity = new Vector2(0f, 0f);
+
     }
 
 

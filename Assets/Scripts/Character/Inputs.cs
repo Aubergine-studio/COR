@@ -17,6 +17,7 @@ public class Inputs : MonoBehaviour
 
     public bool jump    =   false;      //  Flaga skoku.
     public bool fire    =   false;      //  Flaga ataku(w ręcz, na dystns).
+	public float attack = 	0.0f;		//	Zmienna determinujaca animacje ataku.
     public bool action  =   false;      //  Flaga akcji.
 
 
@@ -32,7 +33,10 @@ public class Inputs : MonoBehaviour
             fire = true;
         
         if (Input.GetKeyUp(KeyCode.JoystickButton1))
+		{
             fire = false;
+			attack = Random.Range (1f, 2f);
+		}
         
         if (Input.GetKeyDown(KeyCode.Joystick1Button2))     //  Akcja
             action = true;

@@ -53,7 +53,7 @@ public class Inputs : MonoBehaviour
 		/*
 		 * TMP
 		 */
-		/*
+
 		if (Input.GetKeyDown(KeyCode.S))      //  Atak
 			fire = true;
 		
@@ -76,9 +76,6 @@ public class Inputs : MonoBehaviour
 		
 		if (Input.GetKeyUp(KeyCode.Space))     
 			jump = false;
-
-*/
-
 
         #endregion
 

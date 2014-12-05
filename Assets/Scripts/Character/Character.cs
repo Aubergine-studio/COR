@@ -7,20 +7,22 @@ public abstract class Character : MonoBehaviour
      *  Dodatkowe elementy związane z sterowaniem postacią. 
      */
 
-    protected bool facingRight  = true;        //   Obracanie postaci.
-    protected bool grounded     = false;       //   Czy postać jest uziemiona?
-    protected bool climb        = false;       //   Gotowość postaci do wspinaczki 
-    public Transform IsOnGrond;                //   Pozycja Obiektu wykrywajacego ziemie.
-    public LayerMask Ground;                   //   Maska pozwalajaca określić co jest "ziemią"
+    protected bool facingRight  = true;        	//  Obracanie postaci.
+    protected bool grounded     = false;       	//  Czy postać jest uziemiona?
+    protected bool climb        = false;       	//  Gotowość postaci do wspinaczki 
+    public Transform IsOnGrond;                	//  Pozycja Obiektu wykrywajacego ziemie.
+    public LayerMask Ground;                   	//  Maska pozwalajaca określić co jest "ziemią"
+	public GameObject Hit; 						//	Objekt odpowiadający, za wygenerowanie domeny kolizji, której celem jest 
+	protected  CircleCollider2D HitCollider;	//	wykrycie kolizji przeciwnika z atakiem wręcz gracza.
         
-    protected Animator animator;                  //  Animator postaci.   TMP do zastąpienia osobną klasa.
+    protected Animator animator;                //  Animator postaci.   TMP do zastąpienia osobną klasa.
 
 
     /*
      * Rozwiązanie tymczasowe
      */
-    protected CircleCollider2D    circleColider;
-    protected BoxCollider2D       boxCollider;
+	protected CircleCollider2D  	circleColider;
+    protected BoxCollider2D       	boxCollider;
     /*
      * Rozwiązanie tymczasowe
      */
@@ -39,9 +41,9 @@ public abstract class Character : MonoBehaviour
      * Statystyki postaci.
      */
 
-    private float Health    = 100.0f;   //  Zdrowie.
-    private float Mana      = 100.0f;   //  Mana
-    private float Stamina   = 100.0f;   //  Stamina
+	protected float Health    = 100.0f;   //  Zdrowie.
+	protected float Mana      = 100.0f;   //  Mana
+	protected float Stamina   = 100.0f;   //  Stamina
 
     /*
      *  Metody 
@@ -51,7 +53,8 @@ public abstract class Character : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         circleColider = GetComponent<CircleCollider2D>();
-        
+		HitCollider = Hit.GetComponent<CircleCollider2D>();
+		Hit.SetActive (false);
         inputMenager = GetComponent<Inputs>();
     }
 
@@ -69,6 +72,16 @@ public abstract class Character : MonoBehaviour
         
         transform.localScale = Flip;
     }
+
+	/*
+	 * Funkcja ataku.
+	 */
+
+	protected void Attack()
+	{
+		rigidbody2D.velocity = new Vector2(0f, 0f);
+		Hit.SetActive (inputMenager.fire);
+	}
 
     /*
      * Funkcja poruszania się.

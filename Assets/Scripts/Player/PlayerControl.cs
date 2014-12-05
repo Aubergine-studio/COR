@@ -88,11 +88,6 @@ public class PlayerControl : Character
         }
     }
 
-    void Attack()
-    {
-        rigidbody2D.velocity = new Vector2(0f, 0f);
-
-    }
 
 
     /*
@@ -102,7 +97,7 @@ public class PlayerControl : Character
     void Update()
     {
 		inputMenager.GetInputs ();
-		
+		Actions();
 		grounded = Physics2D.OverlapCircle(IsOnGrond.position, 0.2f, Ground);
     }
 
@@ -112,6 +107,6 @@ public class PlayerControl : Character
     
     void FixedUpdate()
     {
-        Actions();
+        
     }
 }

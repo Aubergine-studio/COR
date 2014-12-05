@@ -50,6 +50,36 @@ public class Inputs : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Joystick1Button0))     
             jump = false;
 
+		/*
+		 * TMP
+		 */
+		/*
+		if (Input.GetKeyDown(KeyCode.S))      //  Atak
+			fire = true;
+		
+		if (Input.GetKeyUp(KeyCode.S))
+		{
+			fire = false;
+			attack = Random.Range (1f, 2f);
+		}
+
+
+		if (Input.GetKeyDown(KeyCode.A))     //  Akcja
+			action = true;
+		
+		if (Input.GetKeyUp(KeyCode.A))
+			action = false;
+
+
+		if (Input.GetKeyDown(KeyCode.Space))      //  Skok.
+			jump = true;
+		
+		if (Input.GetKeyUp(KeyCode.Space))     
+			jump = false;
+
+*/
+
+
         #endregion
 
         /*

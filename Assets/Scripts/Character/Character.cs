@@ -6,26 +6,25 @@ public abstract class Character : MonoBehaviour
     /*
      *  Dodatkowe elementy związane z sterowaniem postacią. 
      */
-
-    protected bool facingRight  = true;        	//  Obracanie postaci.
-    protected bool grounded     = false;       	//  Czy postać jest uziemiona?
-    protected bool climb        = false;       	//  Gotowość postaci do wspinaczki 
-    public Transform IsOnGrond;                	//  Pozycja Obiektu wykrywajacego ziemie.
+    public Transform isOnGround;                	//  Pozycja Obiektu wykrywajacego ziemie.
     public LayerMask Ground;                   	//  Maska pozwalajaca określić co jest "ziemią"
-	public GameObject Hit; 						//	Objekt odpowiadający, za wygenerowanie domeny kolizji, której celem jest 
-	protected  CircleCollider2D HitCollider;	//	wykrycie kolizji przeciwnika z atakiem wręcz gracza.
-        
+	protected  CircleCollider2D[] circleColliders;	//	wykrycie kolizji przeciwnika z atakiem wręcz gracza.
     protected Animator animator;                //  Animator postaci.   TMP do zastąpienia osobną klasa.
+	protected AnimatorController animatorController;
 
+	public GameObject projectileType;
 
     /*
      * Rozwiązanie tymczasowe
      */
-	protected CircleCollider2D  	circleColider;
+	protected CircleCollider2D  	circleCollider;
     protected BoxCollider2D       	boxCollider;
     /*
      * Rozwiązanie tymczasowe
      */
+
+	public CircleCollider2D hitCollider;
+	public CircleCollider2D legsCollider;
 
     /*
      * Parametry zachowania postaci.
@@ -33,7 +32,7 @@ public abstract class Character : MonoBehaviour
 
     public float maxSpeed   = 10f;      //  Maksymalna prędkośc poruszania się. 
     public float jumpForce  = 400f;     //  Siła skoku.
-    protected Inputs inputMenager;        //  Wejścia od gracza.
+    protected Inputs inputs;        //  Wejścia.
 
 
 
@@ -52,10 +51,10 @@ public abstract class Character : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        circleColider = GetComponent<CircleCollider2D>();
-		HitCollider = Hit.GetComponent<CircleCollider2D>();
-		Hit.SetActive (false);
-        inputMenager = GetComponent<Inputs>();
+		circleColliders = GetComponents<CircleCollider2D>();
+		hitCollider.enabled = false;
+        inputs = GetComponent<Inputs>();
+		animatorController = GetComponent<AnimatorController> ();
     }
 
     /*
@@ -64,12 +63,12 @@ public abstract class Character : MonoBehaviour
 
     protected void Flip()
     {
-        facingRight = !facingRight;
+		inputs.isFacingRight = !inputs.isFacingRight;
         
-        Vector3 Flip = transform.localScale;
+		Vector3 Flip = transform.localScale;
         
         Flip.x *= -1;
-        
+
         transform.localScale = Flip;
     }
 
@@ -79,8 +78,17 @@ public abstract class Character : MonoBehaviour
 
 	protected void Attack()
 	{
-		rigidbody2D.velocity = new Vector2(0f, 0f);
-		Hit.SetActive (inputMenager.fire);
+		//rigidbody2D.velocity = new Vector2(0f, 0f);
+		
+		hitCollider.enabled = inputs.fire;
+		var clone = Instantiate (projectileType, transform.position, transform.localRotation) as GameObject;
+
+		if(inputs.isFacingRight)
+			clone.transform.localScale = new Vector3(1,1,1);
+		else
+			clone.transform.localScale = new Vector3(-1,1,1);
+
+		inputs.fire = false;
 	}
 
     /*
@@ -89,13 +97,13 @@ public abstract class Character : MonoBehaviour
     
     protected void Move()
     {
-        rigidbody2D.velocity = new Vector2(inputMenager.horizontalInput * maxSpeed, rigidbody2D.velocity.y);
+        rigidbody2D.velocity = new Vector2(inputs.horizontalInput * maxSpeed, rigidbody2D.velocity.y);
         
-        if (inputMenager.horizontalInput < 0 && !facingRight)
-            this.Flip();
+		if (inputs.horizontalInput < 0 && !inputs.isFacingRight)
+            Flip();
         
-        if (inputMenager.horizontalInput > 0 && facingRight)
-            this.Flip();
+		if (inputs.horizontalInput > 0 && inputs.isFacingRight)
+            Flip();
     }
     
     /*
@@ -105,6 +113,7 @@ public abstract class Character : MonoBehaviour
     protected void Jump()
     {
         rigidbody2D.AddForce(new Vector2(0, jumpForce));
+		inputs.jump = false;
     }
     /*
      * Funkcja wspinajaca.
@@ -117,7 +126,7 @@ public abstract class Character : MonoBehaviour
         
         x = y = z = 0;  //  Zerowanie zmiennych.
         
-        x = transform.position.x + inputMenager.horizontalInput;     //  Ustalanie x     //  Mechanizm powinien być 
+        x = transform.position.x + inputs.horizontalInput;     //  Ustalanie x     //  Mechanizm powinien być 
         //  ulepszony. Pozwala na okreśenie 
         y = boxCollider.transform.position.y + 2f;      //  Ustalanie y     //  gdzie po wespnięciu powinien się znaleść gracz.
         
@@ -125,7 +134,7 @@ public abstract class Character : MonoBehaviour
         
         rigidbody2D.gravityScale = 1;                   //  Włączenie ponownie grawitacji.
         
-        climb = false;                                  //  Ustawienie frali wspoinania na fałsz.
+		inputs.isClimbing = false;                                  //  Ustawienie frali wspoinania na fałsz.
     }
 
     /*
@@ -140,7 +149,7 @@ public abstract class Character : MonoBehaviour
 
     void OnCollisionEnter2D (Collision2D coll)
     {
-        if (!grounded && coll.gameObject.tag == "Ground")
+		if (!inputs.isGrounded && coll.gameObject.tag == "Ground")
         {
             boxCollider = coll.gameObject.GetComponent<BoxCollider2D>();
             
@@ -148,7 +157,7 @@ public abstract class Character : MonoBehaviour
             rigidbody2D.velocity = new Vector2(0, 0);
             rigidbody2D.gravityScale = 0;
             
-            climb = true;
+			inputs.isClimbing = true;
         }
     }
     
@@ -156,27 +165,27 @@ public abstract class Character : MonoBehaviour
     {
         if(coll.gameObject.tag == "Stairs")
         {
-            if(inputMenager.horizontalInput < 0 && coll.gameObject.transform.localScale.x < 0)
+            if(inputs.horizontalInput < 0 && coll.gameObject.transform.localScale.x < 0)
             {
                 rigidbody2D.velocity =  new Vector2(rigidbody2D.velocity.x, 2f);
             }
             
-            if(inputMenager.horizontalInput > 0 && coll.gameObject.transform.localScale.x < 0)
+            if(inputs.horizontalInput > 0 && coll.gameObject.transform.localScale.x < 0)
             {
                 rigidbody2D.velocity =  new Vector2(rigidbody2D.velocity.x, -2f);
             }
             
-            if(inputMenager.horizontalInput > 0 && coll.gameObject.transform.localScale.x > 0)
+            if(inputs.horizontalInput > 0 && coll.gameObject.transform.localScale.x > 0)
             {
                 rigidbody2D.velocity =  new Vector2(rigidbody2D.velocity.x, 2f);
             }
             
-            if(inputMenager.horizontalInput < 0 && coll.gameObject.transform.localScale.x > 0)
+            if(inputs.horizontalInput < 0 && coll.gameObject.transform.localScale.x > 0)
             {
                 rigidbody2D.velocity =  new Vector2(rigidbody2D.velocity.x, -2f);
             }
             
-            grounded = true;
+			inputs.isGrounded = true;
         }
     }
     

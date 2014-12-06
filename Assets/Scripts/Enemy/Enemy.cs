@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class EnemyControl : Character 
+public class Enemy : Character 
 {
 	
 	void OnTriggerEnter2D(Collider2D other) 
@@ -19,7 +19,7 @@ public class EnemyControl : Character
 
 	void Update()
 	{
-		grounded = Physics2D.OverlapCircle(IsOnGrond.position, 0.2f, Ground);
+		inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
 	}
 
 }

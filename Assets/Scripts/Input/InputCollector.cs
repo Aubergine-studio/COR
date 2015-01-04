@@ -81,6 +81,7 @@ public class InputCollector : MonoBehaviour
 		#region AnallogInputs
 		
 		inputs.horizontalInput = Input.GetAxis("Horizontal");  //  Prawo/lewo
+        inputs.verticalInput = Input.GetAxis("Vertical");
 		
 		#endregion
 	}

@@ -14,6 +14,7 @@ public class Player : Character
         }
 		else
 		{
+            if(!inputs.isLadderClimbing)
 			Move ();
 		}
 
@@ -23,7 +24,7 @@ public class Player : Character
         }
 
 
-		if (inputs.isGrounded )//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
+		if (inputs.isGrounded  && !inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
         {
             Move();
         }
@@ -31,6 +32,11 @@ public class Player : Character
         if (inputs.fire && !(animatorController as HumanoidAnimatorController).GetAttackStatus())
         {
             Attack();
+        }
+
+        if (inputs.isLadderClimbing)
+        {
+            LadderClimb();
         }
     }
 

@@ -20,6 +20,13 @@ public class HumanoidAnimatorController : AnimatorController
 
 		animator.SetBool ("Ground", inputs.isGrounded);
 		animator.SetBool ("Fire", inputs.fire);
+        animator.SetBool("LadderClimbing", inputs.isLadderClimbing);
+
+        if (inputs.isGetOnLadder)
+        {
+            animator.SetTrigger("OnLadder");
+            inputs.isGetOnLadder = false;
+        }
 		animator.SetFloat ("Attack", attack);
 		animator.SetFloat ("vSpeed", rigidbody2D.velocity.y);
 		animator.SetFloat ("Speed", Mathf.Abs(inputs.horizontalInput));

@@ -4,12 +4,14 @@ using System.Collections;
 public class Inputs : MonoBehaviour 
 {
 	
-	public bool isFacingRight  		= true;        	//  Obracanie postaci.
+	public bool isFacingLeft  		= true;        	//  Obracanie postaci.
 	public bool isGrounded     		= false;       	//  Czy postać jest uziemiona?
 	public bool isClimbing       	= false;       	//  Gotowość postaci do wspinaczki
 
     public bool isGetOnLadder       = false;
     public bool isLadderClimbing    = false;        //  Wspinaczka po drabinie.
+
+    public bool isStairsClimbing    = false;
 
     /*
      * Odczyt analogowy - Poruszanie się

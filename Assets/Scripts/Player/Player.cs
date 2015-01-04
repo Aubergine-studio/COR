@@ -20,7 +20,7 @@ public class Player : Character
 
 		if (inputs.action && inputs.isClimbing)              //    Warunki wywołania akcji wsponania.
         {
-            Climb();
+        //    Climb();
         }
 
 
@@ -37,6 +37,11 @@ public class Player : Character
         if (inputs.isLadderClimbing)
         {
             LadderClimb();
+        }
+
+        if (inputs.isStairsClimbing)
+        {
+            StairsClimb();
         }
     }
 
@@ -62,7 +67,13 @@ public class Player : Character
     void Update()
     {
 		Actions();
-		inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
+        if (!inputs.isStairsClimbing)
+        {
+            inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
+        } else
+        {
+            inputs.isGrounded = true;
+        }
     }
 
     /*

@@ -30,7 +30,7 @@ public class ParallaxController : MonoBehaviour
 
         float direction = 1f;
 
-        if (_playerInputs.isFacingRight)
+        if (_playerInputs.isFacingLeft)
             direction = -1;
         else
             direction = 1;

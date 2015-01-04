@@ -137,6 +137,11 @@ public abstract class Character : MonoBehaviour
 		inputs.isClimbing = false;                                  //  Ustawienie frali wspoinania na fałsz.
     }
 
+    protected void LadderClimb()
+    {
+        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput * maxSpeed);
+    }
+
     /*
      * Metoda odpowiadająca, za sterowanie postacią. 
      */
@@ -191,6 +196,41 @@ public abstract class Character : MonoBehaviour
     
     void OnCollisionExit2D(Collision2D coll)
     {
+    }
+
+    void OnTriggerEnter2D(Collider2D coll) 
+    {   
+    }
+
+    void OnTriggerStay2D(Collider2D coll) 
+    {
+        if (coll.gameObject.tag == "Ladder" && inputs.action)
+        {
+            if(!inputs.isLadderClimbing)
+            {
+                inputs.isGetOnLadder = true;
+            }
+
+            inputs.isLadderClimbing = true;
+
+            rigidbody2D.gravityScale = 0;
+
+            transform.position = new Vector3 (coll.gameObject.transform.position.x +0.5f, transform.position.y, transform.position.z);
+            transform.localScale =  new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.y);
+        } else
+        {
+            rigidbody2D.gravityScale = 1;
+            inputs.isLadderClimbing = false;
+        }
+    } 
+    
+    void OnTriggerExit2D(Collider2D coll) 
+    {   
+        if (coll.gameObject.tag == "Ladder")
+        {
+            inputs.isLadderClimbing = false;
+            rigidbody2D.gravityScale = 1;
+        }
     }
 
 }

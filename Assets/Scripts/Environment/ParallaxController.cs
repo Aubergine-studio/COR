@@ -29,6 +29,7 @@ public class ParallaxController : MonoBehaviour
         }
 
         float direction = 1f;
+
         if (_playerInputs.isFacingRight)
             direction = -1;
         else
@@ -42,6 +43,13 @@ public class ParallaxController : MonoBehaviour
                                                                         parallaxLayers[i].transform.localPosition.y, 
                                                                         parallaxLayers[i].transform.localPosition.z);
             }
+            if(parallaxLayers[i].transform.localPosition.x > 54f)
+            {
+                parallaxLayers[i].transform.localPosition = new Vector3(0, 
+                                                                        parallaxLayers[i].transform.localPosition.y, 
+                                                                        parallaxLayers[i].transform.localPosition.z);
+            }
         }
+
     }
 }

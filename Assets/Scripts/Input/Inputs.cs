@@ -8,6 +8,9 @@ public class Inputs : MonoBehaviour
 	public bool isGrounded     		= false;       	//  Czy postać jest uziemiona?
 	public bool isClimbing       	= false;       	//  Gotowość postaci do wspinaczki
 
+    public bool isGetOnLadder       = false;
+    public bool isLadderClimbing    = false;        //  Wspinaczka po drabinie.
+
     /*
      * Odczyt analogowy - Poruszanie się
      */

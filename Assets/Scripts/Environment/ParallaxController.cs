@@ -20,7 +20,7 @@ public class ParallaxController : MonoBehaviour
     
     void Update () 
     {
-        skybox.transform.localPosition = new Vector3(skybox.transform.localPosition.x - skyboxSpeed, 
+     /*   skybox.transform.localPosition = new Vector3(skybox.transform.localPosition.x - skyboxSpeed, 
                                                      skybox.transform.localPosition.y, 
                                                      skybox.transform.localPosition.z);
 
@@ -28,7 +28,7 @@ public class ParallaxController : MonoBehaviour
         {
             skybox.transform.localPosition = new Vector3(0, skybox.transform.localPosition.y, skybox.transform.localPosition.z);
         }
-
+*/
         float direction = 1f;
 
         if (_playerInputs.isFacingLeft)

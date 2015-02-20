@@ -11,6 +11,7 @@ public class ParallaxController : MonoBehaviour
 
 
     private Inputs _playerInputs;
+    public Rigidbody2D _playerRB;
 
     void Start () 
     {
@@ -37,7 +38,7 @@ public class ParallaxController : MonoBehaviour
 
         for (int i = 0; i < parallaxLayers.Length; i++)
         {
-            if(_playerInputs.horizontalInput != 0)
+            if(_playerRB.velocity.x != 0)
             {
                 parallaxLayers[i].transform.localPosition = new Vector3(parallaxLayers[i].transform.localPosition.x - parallaxLayerSpeed[i]*direction, 
                                                                         parallaxLayers[i].transform.localPosition.y, 

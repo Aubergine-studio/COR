@@ -39,10 +39,6 @@ public class Player : Character
             LadderClimb();
         }
 
-        if (inputs.isStairsClimbing)
-        {
-            StairsClimb();
-        }
     }
 
     void ColiderControl()
@@ -67,13 +63,7 @@ public class Player : Character
     void Update()
     {
 		Actions();
-        if (!inputs.isStairsClimbing)
-        {
-            inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
-        } else
-        {
-            inputs.isGrounded = true;
-        }
+        inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
     }
 
     /*

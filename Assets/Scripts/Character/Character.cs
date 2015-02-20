@@ -146,13 +146,6 @@ public abstract class Character : MonoBehaviour
         rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput * maxSpeed);
     }
 
-    protected void StairsClimb()
-    {
-//        transform.position = Vector3.Lerp(transform.position, stairsMarker.position, Time.deltaTime * 2);
-
-    }
-
-
     /*
      * Metoda odpowiadająca, za sterowanie postacią. 
      */
@@ -162,16 +155,6 @@ public abstract class Character : MonoBehaviour
     /*
      * Metody związane z interakcją. 
      */
-
-    protected void StairsInteraction(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Stairs")
-        {
-       //     stairsMarker = coll.GetComponent<StairsScript>().marker;
-       /*     inputs.isStairsClimbing = true;
-            rigidbody2D.gravityScale = 0;*/
-        }
-    }
 
     protected void LadderInteraction(Collider2D coll)
     {
@@ -218,17 +201,7 @@ public abstract class Character : MonoBehaviour
      */
 
     void OnCollisionEnter2D(Collision2D coll)
-    {/*
-        if (!inputs.isGrounded && coll.gameObject.tag == "Ground")
-        {
-            boxCollider = coll.gameObject.GetComponent<BoxCollider2D>();
-            
-            transform.position = new Vector3(transform.position.x, coll.gameObject.transform.position.y - 0.5f);
-            rigidbody2D.velocity = new Vector2(0, 0);
-            rigidbody2D.gravityScale = 0;
-            
-            inputs.isClimbing = true;
-        }*/
+    {
         if (coll.gameObject.tag == "Stairs")
         {
 
@@ -238,28 +211,6 @@ public abstract class Character : MonoBehaviour
     
     void OnCollisionStay2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Stairs")
-        {
-         /*   if (inputs.horizontalInput < 0 && coll.gameObject.transform.localScale.x < 0)
-            {
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 2f);
-            }
-            
-            if (inputs.horizontalInput > 0 && coll.gameObject.transform.localScale.x < 0)
-            {
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, -2f);
-            }
-            
-            if (inputs.horizontalInput > 0 && coll.gameObject.transform.localScale.x > 0)
-            {
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 2f);
-            }
-            
-            if (inputs.horizontalInput < 0 && coll.gameObject.transform.localScale.x > 0)
-            {
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, -2f);
-            }*/
-        }
     }
     
     void OnCollisionExit2D(Collision2D coll)
@@ -289,7 +240,6 @@ public abstract class Character : MonoBehaviour
     void OnTriggerStay2D(Collider2D coll)
     {
         LadderInteraction(coll);
-        StairsInteraction(coll);
     }
     
     void OnTriggerExit2D(Collider2D coll)

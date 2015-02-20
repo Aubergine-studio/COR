@@ -4,6 +4,7 @@ using System.Collections;
 public class ParallaxController : MonoBehaviour 
 {
     public GameObject skybox;
+    public Sprite skyboxSprite;
     public float skyboxSpeed = 0.01f;
 
     public GameObject[] parallaxLayers;
@@ -16,19 +17,11 @@ public class ParallaxController : MonoBehaviour
     void Start () 
     {
         _playerInputs = GetComponentInParent<CameraTracking>().player.GetComponent<Inputs>();
+        skybox.GetComponent<SpriteRenderer>().sprite = skyboxSprite;
     }
     
     void Update () 
     {
-     /*   skybox.transform.localPosition = new Vector3(skybox.transform.localPosition.x - skyboxSpeed, 
-                                                     skybox.transform.localPosition.y, 
-                                                     skybox.transform.localPosition.z);
-
-        if (skybox.transform.localPosition.x < -35.54f)
-        {
-            skybox.transform.localPosition = new Vector3(0, skybox.transform.localPosition.y, skybox.transform.localPosition.z);
-        }
-*/
         float direction = 1f;
 
         if (_playerInputs.isFacingLeft)

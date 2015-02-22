@@ -25,10 +25,11 @@ public class ParallaxController : MonoBehaviour
 
 
     private Inputs _playerInputs;
-    public Rigidbody2D _playerRB;
+    private Rigidbody2D _playerRB;
 
     void Start () 
     {
+        _playerRB = GetComponentInParent<CameraTracking>().player.GetComponent<Rigidbody2D>();
         _playerInputs = GetComponentInParent<CameraTracking>().player.GetComponent<Inputs>();
         skybox.GetComponent<SpriteRenderer>().sprite = skyboxSprite;
         cloudsSpawnTimer = cloudsSpawnTime;

@@ -50,19 +50,19 @@ public class InputCollector : MonoBehaviour
 		 * TMP
 		 */
 		
-		if (Input.GetKeyDown(KeyCode.S))      //  Atak
+		if (Input.GetKeyDown(KeyCode.Mouse0))      //  Atak
 			inputs.fire = true;
 		
-		if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(KeyCode.Mouse0))
 		{
 			inputs.fire = false;
 		}
 		
 		
-		if (Input.GetKeyDown(KeyCode.A))     //  Akcja
+		if (Input.GetKeyDown(KeyCode.E))     //  Akcja
 			inputs.action = true;
 		
-		if (Input.GetKeyUp(KeyCode.A))
+		if (Input.GetKeyUp(KeyCode.E))
 			inputs.action = false;
 		
 		

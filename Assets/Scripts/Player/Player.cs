@@ -63,7 +63,7 @@ public class Player : Character
     void Update()
     {
 		Actions();
-        inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
+        inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, isOnGroundRadius, Ground);
     }
 
     /*

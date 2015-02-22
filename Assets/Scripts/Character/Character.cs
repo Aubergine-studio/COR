@@ -7,6 +7,7 @@ public abstract class Character : MonoBehaviour
      *  Dodatkowe elementy związane z sterowaniem postacią. 
      */
     public Transform isOnGround;                    //  Pozycja Obiektu wykrywajacego ziemie.
+    public float isOnGroundRadius = 0.2f;
     public LayerMask Ground;                    //  Maska pozwalajaca określić co jest "ziemią"
 
     protected  CircleCollider2D[] circleColliders;  //  wykrycie kolizji przeciwnika z atakiem wręcz gracza.

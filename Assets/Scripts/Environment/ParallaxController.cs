@@ -9,14 +9,16 @@ public class ParallaxController : MonoBehaviour
     public float skyboxSpeed = 0.01f;
 
     public GameObject cloud;
-    private List<Object> cloudsObjects = new List<Object>();
-    private SpriteRenderer cloudsRenderer;
+    private List<GameObject> cloudsObjects = new List<GameObject>();
     public Sprite[] clouds;
 
+    public int cloudsCount = 10;
     public float cloudsSpawnTime = 300f;
     private float cloudsSpawnTimer;
     public float cloudsMinSpeed = 10f;
     public float cloudsMaxSpeed = 20f;
+    public float cloudsMinSpawnHeight = 1f;
+    public float cloudsMaxSpawnHeight = 5f;
 
     public GameObject[] parallaxLayers;
     public float[] parallaxLayerSpeed;
@@ -30,7 +32,18 @@ public class ParallaxController : MonoBehaviour
         _playerInputs = GetComponentInParent<CameraTracking>().player.GetComponent<Inputs>();
         skybox.GetComponent<SpriteRenderer>().sprite = skyboxSprite;
         cloudsSpawnTimer = cloudsSpawnTime;
-        cloudsRenderer = cloud.GetComponent<SpriteRenderer>();
+
+          for (int i = 0; i < cloudsCount; ++i)
+        {
+            cloudsObjects.Add(            (Instantiate(cloud, new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight) ,0),
+                                                      Quaternion.identity) as GameObject)
+                              );
+       /*    Instantiate(cloudsObjects[i], new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight) ,0),
+                        Quaternion.identity); */
+            cloudsObjects[i].transform.parent = transform;
+            cloudsObjects[i].SetActive(false);
+
+        }
     }
     
     void Update () 
@@ -58,20 +71,28 @@ public class ParallaxController : MonoBehaviour
             }
         }
 
-        if (cloudsSpawnTimer <= 0 && cloudsObjects.Count <= 10)
+        if (cloudsSpawnTimer <= 0)
         {
-            cloudsSpawnTimer = cloudsSpawnTime;
-            cloudsRenderer.sprite = clouds[Random.Range(0, clouds.Length)];
-            Object o = Instantiate(cloud, new Vector3(20, Random.Range(5,1) ,0),
+            for (int i = 0; i < cloudsCount; ++i)
+            {
+                if(!cloudsObjects[i].activeSelf)
+                {
+                    cloudsObjects[i].transform.localPosition = new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight));
+                    cloudsObjects[i].SetActive(true);
+                    cloudsObjects[i].GetComponent<Rigidbody2D>().velocity = new Vector2(-Random.Range(cloudsMinSpeed, cloudsMaxSpeed), 0);
+                    cloudsObjects[i].GetComponent<SpriteRenderer>().sprite = clouds[Random.Range(0, clouds.Length)];
+                    break;
+                }
+            }
+                cloudsSpawnTimer = cloudsSpawnTime;
+
+      /*      Object o = Instantiate(cloud, new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight) ,0),
                                    Quaternion.identity);
 
-            (o as GameObject).GetComponent<Rigidbody2D>().velocity = new Vector2(
-                -Random.Range(cloudsMinSpeed, cloudsMaxSpeed)
-                , 0
-                );
+            (o as GameObject).GetComponent<Rigidbody2D>().velocity = new Vector2(-Random.Range(cloudsMinSpeed, cloudsMaxSpeed), 0);
             (o as GameObject).GetComponent<Transform>().parent = transform;
 
-            cloudsObjects.Add(o);
+            cloudsObjects.Add(o); */
 
         } else
         {

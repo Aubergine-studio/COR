@@ -3,19 +3,32 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour
 {
-	private float projectileSpeed = 5f;
-	private float projectileDistance = 1f;
-	private int projectileDamage = 10;
+    [HideInInspector]
+    public float moveDirection = 1.0f;
+	public float projectileSpeed = 5f;
+    public float projectileDistance = 1f;
+    public int projectileDamage = 10;
+
+    private float startX;
 
 	// Use this for initialization
 	void Start ()
 	{
-		rigidbody2D.velocity = new Vector2 (projectileSpeed, rigidbody2D.velocity.y);
+		rigidbody2D.velocity = new Vector2 (projectileSpeed * moveDirection, rigidbody2D.velocity.y);
+        startX = Mathf.Abs(transform.position.x);
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	
+        if(Mathf.Abs(startX - Mathf.Abs(transform.position.x)) > projectileDistance)
+        {
+            Destroy(gameObject);
+        }
 	}
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        Destroy(gameObject);
+    }
 }

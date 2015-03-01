@@ -45,12 +45,12 @@ public class Player : Character
     {
 		if (rigidbody2D.velocity.y < 0 && !inputs.isGrounded)
         {
-			circleColliders[0].center = new Vector2(circleColliders[0].center.x, -2.8f);
+            legsCollider.center = new Vector2(legsCollider.center.x, -2.8f);
         } 
         
 		if (rigidbody2D.velocity.y > 0 && !inputs.isGrounded)
         {
-			circleColliders[0].center = new Vector2(circleColliders[0].center.x, 0.5f);
+            legsCollider.center = new Vector2(legsCollider.center.x, 0.5f);
         }
     }
 

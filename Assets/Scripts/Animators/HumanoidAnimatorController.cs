@@ -15,7 +15,7 @@ public class HumanoidAnimatorController : AnimatorController
 
 		if(inputs.fire && AttaksHash != animationStatus.nameHash)
 		{
-			attack = Random.Range(1f, 2f);
+			attack = Random.Range(1, 3);
 		}
 
 		animator.SetBool ("Ground", inputs.isGrounded);

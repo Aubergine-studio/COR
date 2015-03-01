@@ -39,8 +39,6 @@ public class ParallaxController : MonoBehaviour
             cloudsObjects.Add(            (Instantiate(cloud, new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight) ,0),
                                                       Quaternion.identity) as GameObject)
                               );
-       /*    Instantiate(cloudsObjects[i], new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight) ,0),
-                        Quaternion.identity); */
             cloudsObjects[i].transform.parent = transform;
             cloudsObjects[i].SetActive(false);
 

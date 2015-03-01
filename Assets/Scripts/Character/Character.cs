@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Character : MonoBehaviour
 {
@@ -10,27 +11,18 @@ public abstract class Character : MonoBehaviour
     public float isOnGroundRadius = 0.2f;
     public LayerMask Ground;                    //  Maska pozwalajaca określić co jest "ziemią"
 
-    protected  CircleCollider2D[] circleColliders;  //  wykrycie kolizji przeciwnika z atakiem wręcz gracza.
     protected Animator animator;                //  Animator postaci.   TMP do zastąpienia osobną klasa.
 
     protected AnimatorController animatorController;
 
-    public GameObject projectileType;
+    public GameObject[] projectileType;
+    public Transform projectileSpawn;
+    private int selectedProjectile = 0;
 
     private Transform stairsMarker;
 
-    /*
-     * Rozwiązanie tymczasowe
-     */
-    protected CircleCollider2D      circleCollider;
-    protected BoxCollider2D         boxCollider;
-    /*
-     * Rozwiązanie tymczasowe
-     */
-
-    public CircleCollider2D hitCollider;
     public CircleCollider2D legsCollider;
-
+	private List<Collider2D> allColliders =  new List<Collider2D>();
     /*
      * Parametry zachowania postaci.
      */
@@ -41,13 +33,14 @@ public abstract class Character : MonoBehaviour
 
 
 
+
     /*
      * Statystyki postaci.
      */
 
-    protected float Health = 100.0f;   //  Zdrowie.
-    protected float Mana = 100.0f;   //  Mana
-    protected float Stamina = 100.0f;   //  Stamina
+    public float Health = 100.0f;   //  Zdrowie.
+    public float Mana = 100.0f;   //  Mana
+    public float Stamina = 100.0f;   //  Stamina
 
     /*
      *  Metody 
@@ -56,11 +49,31 @@ public abstract class Character : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        circleColliders = GetComponents<CircleCollider2D>();
-        hitCollider.enabled = false;
         inputs = GetComponent<Inputs>();
         animatorController = GetComponent<AnimatorController>();
+        legsCollider = GetComponent<CircleCollider2D>();
+
+		CircleCollider2D[] c = gameObject.GetComponents<CircleCollider2D> ();
+		foreach (Collider2D coll in c) 
+		{
+			allColliders.Add(coll);
+		}
+		BoxCollider2D[] b = GetComponents<BoxCollider2D> ();
+
+		foreach (Collider2D coll in b) 
+		{
+			allColliders.Add(coll);
+		}
+
     }
+
+	protected void DisableAllColliders()
+	{
+		foreach (Collider2D coll in allColliders)
+		{
+			coll.enabled = false;
+		}
+	}
 
     /*
      * Funkcja obraca postać.
@@ -83,15 +96,13 @@ public abstract class Character : MonoBehaviour
 
     protected void Attack()
     {
-        //rigidbody2D.velocity = new Vector2(0f, 0f);
-        
-        hitCollider.enabled = inputs.fire;
-        var clone = Instantiate(projectileType, transform.position, transform.localRotation) as GameObject;
+
+        Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
 
         if (inputs.isFacingLeft)
-            clone.transform.localScale = new Vector3(1, 1, 1);
+            clone.moveDirection = -1.0f;
         else
-            clone.transform.localScale = new Vector3(-1, 1, 1);
+            clone.moveDirection = 1.0f;
 
         inputs.fire = false;
     }
@@ -126,7 +137,7 @@ public abstract class Character : MonoBehaviour
     
     
     protected void Climb()
-    {
+    {/*
         float x, y, z;  //  Zmienne do określenia pozycji
         
         x = y = z = 0;  //  Zerowanie zmiennych.
@@ -140,6 +151,7 @@ public abstract class Character : MonoBehaviour
         rigidbody2D.gravityScale = 1;                   //  Włączenie ponownie grawitacji.
         
         inputs.isClimbing = false;                                  //  Ustawienie frali wspoinania na fałsz.
+        */
     }
 
     protected void LadderClimb()
@@ -203,11 +215,6 @@ public abstract class Character : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Stairs")
-        {
-
-            inputs.isStairsClimbing = true;
-        }
     }
     
     void OnCollisionStay2D(Collision2D coll)
@@ -216,12 +223,6 @@ public abstract class Character : MonoBehaviour
     
     void OnCollisionExit2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Stairs")
-        {
-            
-            inputs.isStairsClimbing = false;
-        }
-
     }
 
     void OnTriggerEnter2D(Collider2D coll)

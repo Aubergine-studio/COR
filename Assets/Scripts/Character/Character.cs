@@ -46,7 +46,7 @@ public abstract class Character : MonoBehaviour
      *  Metody 
      */
 
-    void Start()
+    protected void Start()
     {
         animator = GetComponent<Animator>();
         inputs = GetComponent<Inputs>();

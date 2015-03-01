@@ -3,6 +3,21 @@ using System.Collections;
 
 public class Player : Character
 {
+	private int experience;
+
+	public int Exp
+	{
+		get { return experience;}
+		set
+		{
+			if(value > 0)
+			{
+				Debug.Log("I get a " + value.ToString() + " experience!");
+				experience += value;
+			}
+		}
+	}
+
     override    
     protected void Actions()
     {
@@ -54,7 +69,9 @@ public class Player : Character
         }
     }
 
-
+	void GetExp(int _exp)
+	{
+	}
 
     /*
      * Update wywiłujacy się co klatkę. 

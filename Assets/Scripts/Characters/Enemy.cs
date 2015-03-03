@@ -33,6 +33,8 @@ public class Enemy : Character
         {
             DisableAllColliders();
             rigidbody2D.gravityScale = 0;
+            rigidbody2D.velocity = Vector2.zero;
+
             foreach (Player p in players)
             {
                 p.Exp = experience;

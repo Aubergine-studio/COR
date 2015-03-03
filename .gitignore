@@ -12,3 +12,6 @@ Assembly-CSharp-vs.csproj
 *.userprefs
 
 /Licencjat GAME
+
+*.suo
+*.csproj

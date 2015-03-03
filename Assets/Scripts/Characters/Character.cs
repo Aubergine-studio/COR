@@ -19,29 +19,21 @@ public abstract class Character : MonoBehaviour
     public Transform projectileSpawn;
     private int selectedProjectile = 0;
 
-    private Transform stairsMarker;
-
     public CircleCollider2D legsCollider;
+    public BoxCollider2D    bodyCollider;
 	private List<Collider2D> allColliders =  new List<Collider2D>();
-    /*
-     * Parametry zachowania postaci.
-     */
 
-    public float maxSpeed = 10f;      //  Maksymalna prędkośc poruszania się. 
-    public float jumpForce = 400f;     //  Siła skoku.
-    protected Inputs inputs;        //  Wejścia.
+    #region Parametry postaci
 
+    public float maxSpeed = 10f;        //  Maksymalna prędkośc poruszania się. 
+    public float jumpForce = 400f;      //  Siła skoku.
+    protected Inputs inputs;            //  Wejścia.
 
+    public float Health = 100.0f;       //  Zdrowie.
+    public float Mana = 100.0f;         //  Mana
+    public float Stamina = 100.0f;      //  Stamina
 
-
-    /*
-     * Statystyki postaci.
-     */
-
-    public float Health = 100.0f;   //  Zdrowie.
-    public float Mana = 100.0f;   //  Mana
-    public float Stamina = 100.0f;   //  Stamina
-
+    #endregion
     /*
      *  Metody 
      */
@@ -131,27 +123,14 @@ public abstract class Character : MonoBehaviour
         rigidbody2D.AddForce(new Vector2(0, jumpForce));
         inputs.jump = false;
     }
+
     /*
      * Funkcja wspinajaca.
      */
     
     
     protected void Climb()
-    {/*
-        float x, y, z;  //  Zmienne do określenia pozycji
-        
-        x = y = z = 0;  //  Zerowanie zmiennych.
-        
-        x = transform.position.x + inputs.horizontalInput;     //  Ustalanie x     //  Mechanizm powinien być 
-        //  ulepszony. Pozwala na okreśenie 
-        y = boxCollider.transform.position.y + 2f;      //  Ustalanie y     //  gdzie po wespnięciu powinien się znaleść gracz.
-        
-        transform.position = new Vector3(x, y, z);      //  Ustalenie nowej pozycji gracza
-        
-        rigidbody2D.gravityScale = 1;                   //  Włączenie ponownie grawitacji.
-        
-        inputs.isClimbing = false;                                  //  Ustawienie frali wspoinania na fałsz.
-        */
+    {
     }
 
     protected void LadderClimb()
@@ -212,55 +191,4 @@ public abstract class Character : MonoBehaviour
     /*
      * Funkcje kolizji 
      */
-
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-    }
-    
-    void OnCollisionStay2D(Collision2D coll)
-    {
-    }
-    
-    void OnCollisionExit2D(Collision2D coll)
-    {
-    }
-
-    void OnTriggerEnter2D(Collider2D coll)
-    {  
-        if (coll.gameObject.tag == "Wall")
-        {
-            coll.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        }
-
-        if (coll.gameObject.tag == "Stairs")
-        {   
-            inputs.isStairsClimbing = true;
-        }
-
-    }
-
-    void OnTriggerStay2D(Collider2D coll)
-    {
-        LadderInteraction(coll);
-    }
-    
-    void OnTriggerExit2D(Collider2D coll)
-    {   
-        if (coll.gameObject.tag == "Ladder")
-        {
-            inputs.isLadderClimbing = false;
-            rigidbody2D.gravityScale = 1;
-        }
-
-        if (coll.gameObject.tag == "Wall")
-        {
-            coll.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        if (coll.gameObject.tag == "Stairs")
-        {   
-            inputs.isStairsClimbing = false;
-        }
-
-    }
-
 }

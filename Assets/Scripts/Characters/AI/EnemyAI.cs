@@ -36,19 +36,6 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, sight);
-
-
-        foreach (Collider2D coll in collisions)
-        {
-            if (coll.tag == "Player")
-            {
-                Debug.Log("Player!");
-                inputs.horizontalInput = 1f;
-                break;
-            }
-        }
-
         foreach (Behavior b in behaviors)
         {
             b.Behave();

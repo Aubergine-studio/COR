@@ -18,10 +18,14 @@ public abstract class Character : MonoBehaviour
     public GameObject[] projectileType;
     public Transform projectileSpawn;
     private int selectedProjectile = 0;
+    public int projectileIndex
+    {
+        get { return selectedProjectile; }
+    }
 
     public CircleCollider2D legsCollider;
     public BoxCollider2D bodyCollider;
-    private List<Collider2D> allColliders = new List<Collider2D>();
+    protected List<Collider2D> allColliders = new List<Collider2D>();
     public List<Collider2D> collidersList
     {
         get { return allColliders; }
@@ -36,6 +40,8 @@ public abstract class Character : MonoBehaviour
     public float Health = 100.0f;       //  Zdrowie.
     public float Mana = 100.0f;         //  Mana
     public float Stamina = 100.0f;      //  Stamina
+    public float attackSpead = 1f;
+    private float attackTimer = 0f;
 
     #endregion
     /*
@@ -60,7 +66,6 @@ public abstract class Character : MonoBehaviour
         {
             allColliders.Add(coll);
         }
-
     }
 
     protected void DisableAllColliders()
@@ -92,15 +97,28 @@ public abstract class Character : MonoBehaviour
 
     protected void Attack()
     {
+        if (attackTimer == 0f)
+        {
+            if (inputs.fire)
+            {
+                attackTimer = attackSpead;
+                Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
 
-        Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
+                if (inputs.isFacingLeft)
+                    clone.moveDirection = -1.0f;
+                else
+                    clone.moveDirection = 1.0f;
+                clone.name = tag;
 
-        if (inputs.isFacingLeft)
-            clone.moveDirection = -1.0f;
+                inputs.fire = false;
+            }
+        }
         else
-            clone.moveDirection = 1.0f;
-
-        inputs.fire = false;
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer < 0)
+                attackTimer = 0;
+        }
     }
 
     /*
@@ -109,13 +127,18 @@ public abstract class Character : MonoBehaviour
 
     protected void Move()
     {
-        rigidbody2D.velocity = new Vector2(inputs.horizontalInput * maxSpeed, rigidbody2D.velocity.y);
+        if ((inputs.isGrounded && !inputs.isLadderClimbing)
+                || !inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
+        {
 
-        if (inputs.horizontalInput < 0 && !inputs.isFacingLeft)
-            Flip();
+            rigidbody2D.velocity = new Vector2(inputs.horizontalInput * maxSpeed, rigidbody2D.velocity.y);
 
-        if (inputs.horizontalInput > 0 && inputs.isFacingLeft)
-            Flip();
+            if (inputs.horizontalInput < 0 && !inputs.isFacingLeft)
+                Flip();
+
+            if (inputs.horizontalInput > 0 && inputs.isFacingLeft)
+                Flip();
+        }
     }
 
     /*
@@ -124,8 +147,12 @@ public abstract class Character : MonoBehaviour
 
     protected void Jump()
     {
-        rigidbody2D.AddForce(new Vector2(0, jumpForce));
-        inputs.jump = false;
+        if (inputs.jump && inputs.isGrounded)             //   Warunki wywołania akcji skoku.             
+        {
+
+            rigidbody2D.AddForce(new Vector2(0, jumpForce));
+            inputs.jump = false;
+        }
     }
 
     /*
@@ -139,7 +166,10 @@ public abstract class Character : MonoBehaviour
 
     protected void LadderClimb()
     {
-        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput * maxSpeed);
+        if (inputs.isLadderClimbing)
+        {
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput * maxSpeed);
+        }
     }
 
     /*
@@ -189,6 +219,19 @@ public abstract class Character : MonoBehaviour
             rigidbody2D.gravityScale = 1;
             inputs.isLadderClimbing = false;
             Flip();
+        }
+
+    }
+
+    protected void Dies()
+    {
+        if (Health <= 0)
+        {
+            DisableAllColliders();
+            rigidbody2D.gravityScale = 0;
+            rigidbody2D.velocity = Vector2.zero;
+            
+            this.enabled = false;
         }
 
     }

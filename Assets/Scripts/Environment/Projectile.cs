@@ -5,7 +5,9 @@ public class Projectile : MonoBehaviour
 {
     [HideInInspector]
     public float moveDirection = 1.0f;
-	public float projectileSpeed = 5f;
+    [HideInInspector]
+    public string owner;
+    public float projectileSpeed = 5f;
     public float projectileDistance = 1f;
     public int projectileDamage = 10;
 

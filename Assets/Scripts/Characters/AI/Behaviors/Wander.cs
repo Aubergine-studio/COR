@@ -3,13 +3,6 @@ using System.Collections;
 
 public class Wander : Behavior
 {
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     public override void Behave()
     {
         Collider2D collision = Physics2D.OverlapPoint(brain.obstacleDetector.position);
@@ -19,7 +12,7 @@ public class Wander : Behavior
             if (collision.tag == "Ground")
                 brain.inputs.horizontalInput *= -1;
 
-            if (collision.tag == brain.tag)
+            if (collision.tag == brain.slave.tag)
             {
                 foreach (Collider2D coll in brain.slave.collidersList)
                     Physics2D.IgnoreCollision(collision, coll);

@@ -23,6 +23,8 @@ public class Enemy : Character
     protected void Actions()
     {
         Move();
+        Attack();
+        Dies();
     }
 
     void Update()
@@ -30,23 +32,18 @@ public class Enemy : Character
         Actions();
 
         if (Health <= 0)
-        {
-            DisableAllColliders();
-            rigidbody2D.gravityScale = 0;
-            rigidbody2D.velocity = Vector2.zero;
-
             foreach (Player p in players)
             {
                 p.Exp = experience;
             }
-            this.enabled = false;
-        }
+
         inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
     }
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.tag == "Projectile")
+        
+        if (coll.tag == "Projectile" && coll.name == "Player")
         {
             Health -= coll.GetComponent<Projectile>().projectileDamage;
         }

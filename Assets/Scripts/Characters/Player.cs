@@ -21,39 +21,17 @@ public class Player : Character
     override
     protected void Actions()
     {
-        //ColiderControl();
-
-        if (inputs.jump && inputs.isGrounded)             //   Warunki wywołania akcji skoku.             
-        {
-            Jump();
-        }
-        else
-        {
-            if (!inputs.isLadderClimbing)
-                Move();
-        }
+        Jump();
 
         if (inputs.action && inputs.isClimbing)              //    Warunki wywołania akcji wsponania.
         {
-            //    Climb();
         }
 
+        Move();
 
-        if (inputs.isGrounded && !inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
-        {
-            Move();
-        }
+        Attack();
 
-        if (inputs.fire && !(animatorController as HumanoidAnimatorController).GetAttackStatus())
-        {
-            Attack();
-        }
-
-        if (inputs.isLadderClimbing)
-        {
-            LadderClimb();
-        }
-
+        LadderClimb();
     }
 
     void ColiderControl()
@@ -72,6 +50,7 @@ public class Player : Character
     void Update()
     {
         inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, isOnGroundRadius, Ground);
+        Dies();
     }
 
     /*
@@ -89,6 +68,11 @@ public class Player : Character
 
     void OnCollisionStay2D(Collision2D coll)
     {
+        if (coll.gameObject.tag == "Enemy")
+        {
+            foreach (Collider2D c in allColliders)
+                Physics2D.IgnoreCollision(coll.collider, c);
+        }
     }
 
     void OnCollisionExit2D(Collision2D coll)
@@ -107,6 +91,10 @@ public class Player : Character
             inputs.isStairsClimbing = true;
         }
 
+        if (coll.tag == "Projectile" && coll.name == "Enemy")
+        {
+            Health -= coll.GetComponent<Projectile>().projectileDamage;
+        }   
     }
 
     void OnTriggerStay2D(Collider2D coll)

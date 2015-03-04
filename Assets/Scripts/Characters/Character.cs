@@ -20,8 +20,12 @@ public abstract class Character : MonoBehaviour
     private int selectedProjectile = 0;
 
     public CircleCollider2D legsCollider;
-    public BoxCollider2D    bodyCollider;
-	private List<Collider2D> allColliders =  new List<Collider2D>();
+    public BoxCollider2D bodyCollider;
+    private List<Collider2D> allColliders = new List<Collider2D>();
+    public List<Collider2D> collidersList
+    {
+        get { return allColliders; }
+    }
 
     #region Parametry postaci
 
@@ -45,27 +49,27 @@ public abstract class Character : MonoBehaviour
         animatorController = GetComponent<AnimatorController>();
         legsCollider = GetComponent<CircleCollider2D>();
 
-		CircleCollider2D[] c = gameObject.GetComponents<CircleCollider2D> ();
-		foreach (Collider2D coll in c) 
-		{
-			allColliders.Add(coll);
-		}
-		BoxCollider2D[] b = GetComponents<BoxCollider2D> ();
+        CircleCollider2D[] c = gameObject.GetComponents<CircleCollider2D>();
+        foreach (Collider2D coll in c)
+        {
+            allColliders.Add(coll);
+        }
+        BoxCollider2D[] b = GetComponents<BoxCollider2D>();
 
-		foreach (Collider2D coll in b) 
-		{
-			allColliders.Add(coll);
-		}
+        foreach (Collider2D coll in b)
+        {
+            allColliders.Add(coll);
+        }
 
     }
 
-	protected void DisableAllColliders()
-	{
-		foreach (Collider2D coll in allColliders)
-		{
-			coll.enabled = false;
-		}
-	}
+    protected void DisableAllColliders()
+    {
+        foreach (Collider2D coll in allColliders)
+        {
+            coll.enabled = false;
+        }
+    }
 
     /*
      * Funkcja obraca postać.
@@ -74,9 +78,9 @@ public abstract class Character : MonoBehaviour
     protected void Flip()
     {
         inputs.isFacingLeft = !inputs.isFacingLeft;
-        
+
         Vector3 Flip = transform.localScale;
-        
+
         Flip.x *= -1;
 
         transform.localScale = Flip;
@@ -102,22 +106,22 @@ public abstract class Character : MonoBehaviour
     /*
      * Funkcja poruszania się.
      */
-    
+
     protected void Move()
     {
         rigidbody2D.velocity = new Vector2(inputs.horizontalInput * maxSpeed, rigidbody2D.velocity.y);
-        
+
         if (inputs.horizontalInput < 0 && !inputs.isFacingLeft)
             Flip();
-        
+
         if (inputs.horizontalInput > 0 && inputs.isFacingLeft)
             Flip();
     }
-    
+
     /*
      * Funkcja Skoku.
      */
-    
+
     protected void Jump()
     {
         rigidbody2D.AddForce(new Vector2(0, jumpForce));
@@ -127,8 +131,8 @@ public abstract class Character : MonoBehaviour
     /*
      * Funkcja wspinajaca.
      */
-    
-    
+
+
     protected void Climb()
     {
     }
@@ -156,30 +160,30 @@ public abstract class Character : MonoBehaviour
             {
                 inputs.isGetOnLadder = true;
             }
-            
+
             inputs.isLadderClimbing = true;
-            
+
             rigidbody2D.gravityScale = 0;
-            
+
             float offset = 0f;
-            
+
             if (coll.gameObject.transform.localScale.x > 0)
                 offset = 0.5f;
             else
                 offset = -0.5f;
-            
+
             transform.position = new Vector3(coll.gameObject.transform.position.x + offset, transform.position.y, transform.position.z);
-            
+
             if (coll.gameObject.transform.localScale.x > 0 && transform
                 .localScale.x < 0)
                 Flip();
-            
+
             if (coll.gameObject.transform.localScale.x < 0 && transform
                 .localScale.x > 0)
                 Flip();
-            
-        } 
-        
+
+        }
+
         if (coll.gameObject.tag == "Ladder" && !inputs.action && inputs.isLadderClimbing)
         {
             rigidbody2D.gravityScale = 1;

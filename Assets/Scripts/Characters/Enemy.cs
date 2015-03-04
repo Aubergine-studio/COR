@@ -28,7 +28,7 @@ public class Enemy : Character
     void Update()
     {
         Actions();
-        
+
         if (Health <= 0)
         {
             DisableAllColliders();

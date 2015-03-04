@@ -21,7 +21,7 @@ public class Player : Character
     override
     protected void Actions()
     {
-        ColiderControl();
+        //ColiderControl();
 
         if (inputs.jump && inputs.isGrounded)             //   Warunki wywołania akcji skoku.             
         {
@@ -69,17 +69,8 @@ public class Player : Character
         }
     }
 
-    void GetExp(int _exp)
-    {
-    }
-
-    /*
-     * Update wywiłujacy się co klatkę. 
-     */
-
     void Update()
     {
-        Actions();
         inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, isOnGroundRadius, Ground);
     }
 
@@ -89,7 +80,7 @@ public class Player : Character
 
     void FixedUpdate()
     {
-
+        Actions();
     }
 
     void OnCollisionEnter2D(Collision2D coll)

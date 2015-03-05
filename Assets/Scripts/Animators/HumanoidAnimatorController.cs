@@ -7,17 +7,33 @@ public class HumanoidAnimatorController : AnimatorController
     private AnimatorStateInfo animationStatus;
 
     int AttaksHash = Animator.StringToHash("Base Layer.Attacks");
+    Player player;
+    new void Start()
+    {
+        base.Start();
+        player = GetComponent<Player>();
+    }
+    
     protected override void ControlAnimator()
     {
         animationStatus = animator.GetCurrentAnimatorStateInfo(0);
 
         if (inputs.fire && AttaksHash != animationStatus.nameHash)
         {
-            attack = Random.Range(1, 3);
+            switch (player.projectileIndex)
+            {
+                case 0:
+                    attack = Random.Range(1,3);
+                    break;
+                case 1:
+                    attack = Random.Range(3, 5);
+                    break;
+            }
         }
 
         animator.SetBool("Ground", inputs.isGrounded);
-        animator.SetBool("Fire", inputs.fire);
+        if(inputs.fire)
+            animator.SetTrigger("Fire");
         animator.SetBool("LadderClimbing", inputs.isLadderClimbing);
 
         if (inputs.isGetOnLadder)

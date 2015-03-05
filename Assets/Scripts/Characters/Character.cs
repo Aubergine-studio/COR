@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour
 
     public GameObject[] projectileType;
     public Transform projectileSpawn;
-    private int selectedProjectile = 0;
+    protected int selectedProjectile = 0;
     public int projectileIndex
     {
         get { return selectedProjectile; }

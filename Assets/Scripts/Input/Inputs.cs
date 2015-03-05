@@ -19,7 +19,8 @@ public class Inputs : MonoBehaviour
 
     public float horizontalInput;       //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w poziomie.
     public float verticalInput;         //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w pionie.
-
+    public float d_pad_x;
+    public float d_pad_y;
     /*
      * Flagi, klawiszy.
      */

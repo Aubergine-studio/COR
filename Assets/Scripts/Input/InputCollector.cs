@@ -13,7 +13,7 @@ public class InputCollector : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update ()
+    void FixedUpdate()
 	{
 		GetInputs ();
 	}
@@ -25,14 +25,25 @@ public class InputCollector : MonoBehaviour
          */
 		
 		#region ControllerButtons
-		
+
+        #region AnallogInputs
+
+        inputs.horizontalInput = Input.GetAxis("Horizontal");  //  Prawo/lewo
+        inputs.verticalInput = Input.GetAxis("Vertical");
+
+        //inputs.horizontalInput = Input.GetAxis("Left analog X");  //  Prawo/lewo
+        //inputs.verticalInput = Input.GetAxis("Left analog Y");
+        inputs.d_pad_x = Input.GetAxis("D-Pad X");
+        inputs.d_pad_y = Input.GetAxis("D-Pad Y");
+
+        #endregion
+
+        
 		if (Input.GetKeyDown(KeyCode.JoystickButton1))      //  Atak
 			inputs.fire = true;
 		
 		if (Input.GetKeyUp(KeyCode.JoystickButton1))
-		{
 			inputs.fire = false;
-		}
 		
 		if (Input.GetKeyDown(KeyCode.Joystick1Button2))     //  Akcja
 			inputs.action = true;
@@ -54,9 +65,7 @@ public class InputCollector : MonoBehaviour
 			inputs.fire = true;
 		
         if (Input.GetKeyUp(KeyCode.Mouse0))
-		{
 			inputs.fire = false;
-		}
 		
 		
 		if (Input.GetKeyDown(KeyCode.E))     //  Akcja
@@ -78,11 +87,5 @@ public class InputCollector : MonoBehaviour
          * Wejścia analogowe.
          */
 		
-		#region AnallogInputs
-		
-		inputs.horizontalInput = Input.GetAxis("Horizontal");  //  Prawo/lewo
-        inputs.verticalInput = Input.GetAxis("Vertical");
-		
-		#endregion
 	}
 }

@@ -18,7 +18,7 @@ public abstract class AnimatorController : MonoBehaviour
     protected abstract void ControlAnimator();
 
     // Update is called once per frame
-    protected void Update()
+    protected void FixedUpdate()
     {
         ControlAnimator();
     }

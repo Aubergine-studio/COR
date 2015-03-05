@@ -50,6 +50,8 @@ public class Player : Character
     void Update()
     {
         inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, isOnGroundRadius, Ground);
+        if(inputs.d_pad_y == 1f)
+            selectedProjectile = 1;
         Dies();
     }
 

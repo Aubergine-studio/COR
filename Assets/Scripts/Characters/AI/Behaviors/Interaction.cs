@@ -15,19 +15,19 @@ public class Interaction : Behavior
                 if (Mathf.Abs(coll.transform.position.x - brain.slave.projectileSpawn.transform.position.x) <=
                 brain.slave.projectileType[brain.slave.projectileIndex].GetComponent<Projectile>().projectileDistance)
                 {
-                    brain.inputs.horizontalInput = 0;
+                    brain.inputs.horizontalInput_left = 0;
                     brain.inputs.fire = true;
                 }
                 else
                 {
                     if (coll.transform.position.x < brain.transform.position.x)
                     {
-                        brain.inputs.horizontalInput = -1f;
+                        brain.inputs.horizontalInput_left = -1f;
                     }
 
                     if (coll.transform.position.x > brain.transform.position.x)
                     {
-                        brain.inputs.horizontalInput = 1f;
+                        brain.inputs.horizontalInput_left = 1f;
                     }
                 }
                 Debug.Log("Player!");

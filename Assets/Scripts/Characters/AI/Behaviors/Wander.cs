@@ -10,7 +10,7 @@ public class Wander : Behavior
         if (collision != null)
         {
             if (collision.tag == "Ground")
-                brain.inputs.horizontalInput *= -1;
+                brain.inputs.horizontalInput_left *= -1;
 
             if (collision.tag == brain.slave.tag)
             {

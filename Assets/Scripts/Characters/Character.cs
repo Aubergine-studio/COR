@@ -131,12 +131,12 @@ public abstract class Character : MonoBehaviour
                 || !inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
         {
 
-            rigidbody2D.velocity = new Vector2(inputs.horizontalInput * maxSpeed, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(inputs.horizontalInput_left * maxSpeed, rigidbody2D.velocity.y);
 
-            if (inputs.horizontalInput < 0 && !inputs.isFacingLeft)
+            if (inputs.horizontalInput_left < 0 && !inputs.isFacingLeft)
                 Flip();
 
-            if (inputs.horizontalInput > 0 && inputs.isFacingLeft)
+            if (inputs.horizontalInput_left > 0 && inputs.isFacingLeft)
                 Flip();
         }
     }
@@ -168,7 +168,7 @@ public abstract class Character : MonoBehaviour
     {
         if (inputs.isLadderClimbing)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput * maxSpeed);
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput_left * maxSpeed);
         }
     }
 
@@ -230,12 +230,9 @@ public abstract class Character : MonoBehaviour
             DisableAllColliders();
             rigidbody2D.gravityScale = 0;
             rigidbody2D.velocity = Vector2.zero;
-            
+
             this.enabled = false;
         }
 
     }
-    /*
-     * Funkcje kolizji 
-     */
 }

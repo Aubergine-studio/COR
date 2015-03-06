@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LadderScript : MonoBehaviour
+public class Ladder : UsableItem
 {
     public GameObject ActionButtonIcon;
     public GameObject[] grounds;

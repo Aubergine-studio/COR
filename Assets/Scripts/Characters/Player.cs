@@ -50,7 +50,22 @@ public class Player : Character
     void Update()
     {
         inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, isOnGroundRadius, Ground);
-        if(inputs.d_pad_y == 1f)
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 30f);
+        int enemiesCount = 0;
+        foreach (Collider2D coll in enemies)
+        {
+            if (coll.gameObject.tag == "Enemy")
+            {
+                ++enemiesCount;
+            }
+        }
+
+        if (enemiesCount > 0)
+            inputs.inCombat = true;
+        else
+            inputs.inCombat = false;
+
+        if (inputs.d_pad_y == 1f)
             selectedProjectile = 1;
         Dies();
     }
@@ -64,8 +79,14 @@ public class Player : Character
         Actions();
     }
 
+    #region Kolizje
+
     void OnCollisionEnter2D(Collision2D coll)
     {
+        if (coll.gameObject.tag == "Stairs")
+        {
+            bodyCollider.enabled = false;
+        }
     }
 
     void OnCollisionStay2D(Collision2D coll)
@@ -79,6 +100,10 @@ public class Player : Character
 
     void OnCollisionExit2D(Collision2D coll)
     {
+        if (coll.gameObject.tag == "Stairs")
+        {
+            bodyCollider.enabled = true;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D coll)
@@ -96,7 +121,7 @@ public class Player : Character
         if (coll.tag == "Projectile" && coll.name == "Enemy")
         {
             Health -= coll.GetComponent<Projectile>().projectileDamage;
-        }   
+        }
     }
 
     void OnTriggerStay2D(Collider2D coll)
@@ -123,4 +148,5 @@ public class Player : Character
 
     }
 
+    #endregion
 }

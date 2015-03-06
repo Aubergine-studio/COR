@@ -24,7 +24,7 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         _inputs = GetComponentInParent<Inputs>();
-        inputs.horizontalInput = 0.4f;
+        inputs.horizontalInput_left = 0.4f;
         mySlave = GetComponentInParent<Enemy>();
 
         behaviors = GetComponents<Behavior>();

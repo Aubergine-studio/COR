@@ -13,7 +13,7 @@ public class InputCollector : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update ()
+    void FixedUpdate()
 	{
 		GetInputs ();
 	}
@@ -25,26 +25,59 @@ public class InputCollector : MonoBehaviour
          */
 		
 		#region ControllerButtons
+
+        #region AnallogInputs
+
+        inputs.horizontalInput_left = Input.GetAxis("Horizontal");  //  Prawo/lewo
+        inputs.verticalInput_left = Input.GetAxis("Vertical");
+
+        inputs.horizontalInput_right = Input.GetAxis("Horizontal_right");  //  Prawo/lewo
+        inputs.verticalInput_right = Input.GetAxis("Vertical_right");
+
+
+        //inputs.horizontalInput = Input.GetAxis("Left analog X");  //  Prawo/lewo
+        //inputs.verticalInput = Input.GetAxis("Left analog Y");
+        inputs.d_pad_x = Input.GetAxis("D-Pad X");
+        inputs.d_pad_y = Input.GetAxis("D-Pad Y");
+        
+        #endregion
+
+        if (Input.GetButtonDown("Attack") )     //  Atak
+            inputs.fire = true;
+
+        if (Input.GetButtonUp("Attack"))
+            inputs.fire = false;
+
+        if (Input.GetButtonDown("Jump") )     //  Atak
+            inputs.jump = true;
+
+        if (Input.GetButtonUp("Jump"))
+            inputs.jump = false;
+
+        if (Input.GetButtonDown("Use"))     //  Atak
+            inputs.action  = true;
+
+        if (Input.GetButtonUp("Use"))
+            inputs.action = false;
+
+   
+        //if (Input.GetKeyDown(KeyCode.JoystickButton1))      //  Atak
+        //    inputs.fire = true;
 		
-		if (Input.GetKeyDown(KeyCode.JoystickButton1))      //  Atak
-			inputs.fire = true;
+        //if (Input.GetKeyUp(KeyCode.JoystickButton1))
+        //    inputs.fire = false;
 		
-		if (Input.GetKeyUp(KeyCode.JoystickButton1))
-		{
-			inputs.fire = false;
-		}
+        //if (Input.GetKeyDown(KeyCode.Joystick1Button2))     //  Akcja
+        //    inputs.action = true;
 		
-		if (Input.GetKeyDown(KeyCode.Joystick1Button2))     //  Akcja
-			inputs.action = true;
+        //if (Input.GetKeyUp(KeyCode.Joystick1Button2))
+        //    inputs.action = false;
 		
-		if (Input.GetKeyUp(KeyCode.Joystick1Button2))
-			inputs.action = false;
+        //if (Input.GetKeyDown(KeyCode.Joystick1Button0))      //  Skok.
+        //    inputs.jump = true;
 		
-		if (Input.GetKeyDown(KeyCode.Joystick1Button0))      //  Skok.
-			inputs.jump = true;
-		
-		if (Input.GetKeyUp(KeyCode.Joystick1Button0))     
-			inputs.jump = false;
+        //if (Input.GetKeyUp(KeyCode.Joystick1Button0))     
+        //    inputs.jump = false;
 		
 		/*
 		 * TMP
@@ -54,9 +87,7 @@ public class InputCollector : MonoBehaviour
 			inputs.fire = true;
 		
         if (Input.GetKeyUp(KeyCode.Mouse0))
-		{
 			inputs.fire = false;
-		}
 		
 		
 		if (Input.GetKeyDown(KeyCode.E))     //  Akcja
@@ -78,11 +109,5 @@ public class InputCollector : MonoBehaviour
          * Wejścia analogowe.
          */
 		
-		#region AnallogInputs
-		
-		inputs.horizontalInput = Input.GetAxis("Horizontal");  //  Prawo/lewo
-        inputs.verticalInput = Input.GetAxis("Vertical");
-		
-		#endregion
 	}
 }

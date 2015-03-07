@@ -17,31 +17,33 @@ public abstract class Character : MonoBehaviour
 
     public GameObject[] projectileType;
     public Transform projectileSpawn;
-    private int selectedProjectile = 0;
-
-    private Transform stairsMarker;
+    protected int selectedProjectile = 0;
+    public int projectileIndex
+    {
+        get { return selectedProjectile; }
+    }
 
     public CircleCollider2D legsCollider;
-	private List<Collider2D> allColliders =  new List<Collider2D>();
-    /*
-     * Parametry zachowania postaci.
-     */
+    public BoxCollider2D bodyCollider;
+    protected List<Collider2D> allColliders = new List<Collider2D>();
+    public List<Collider2D> collidersList
+    {
+        get { return allColliders; }
+    }
 
-    public float maxSpeed = 10f;      //  Maksymalna prędkośc poruszania się. 
-    public float jumpForce = 400f;     //  Siła skoku.
-    protected Inputs inputs;        //  Wejścia.
+    #region Parametry postaci
 
+    public float maxSpeed = 10f;        //  Maksymalna prędkośc poruszania się. 
+    public float jumpForce = 400f;      //  Siła skoku.
+    protected Inputs inputs;            //  Wejścia.
 
+    public float Health = 100.0f;       //  Zdrowie.
+    public float Mana = 100.0f;         //  Mana
+    public float Stamina = 100.0f;      //  Stamina
+    public float attackSpead = 1f;
+    private float attackTimer = 0f;
 
-
-    /*
-     * Statystyki postaci.
-     */
-
-    public float Health = 100.0f;   //  Zdrowie.
-    public float Mana = 100.0f;   //  Mana
-    public float Stamina = 100.0f;   //  Stamina
-
+    #endregion
     /*
      *  Metody 
      */
@@ -53,27 +55,26 @@ public abstract class Character : MonoBehaviour
         animatorController = GetComponent<AnimatorController>();
         legsCollider = GetComponent<CircleCollider2D>();
 
-		CircleCollider2D[] c = gameObject.GetComponents<CircleCollider2D> ();
-		foreach (Collider2D coll in c) 
-		{
-			allColliders.Add(coll);
-		}
-		BoxCollider2D[] b = GetComponents<BoxCollider2D> ();
+        CircleCollider2D[] c = gameObject.GetComponents<CircleCollider2D>();
+        foreach (Collider2D coll in c)
+        {
+            allColliders.Add(coll);
+        }
+        BoxCollider2D[] b = GetComponents<BoxCollider2D>();
 
-		foreach (Collider2D coll in b) 
-		{
-			allColliders.Add(coll);
-		}
-
+        foreach (Collider2D coll in b)
+        {
+            allColliders.Add(coll);
+        }
     }
 
-	protected void DisableAllColliders()
-	{
-		foreach (Collider2D coll in allColliders)
-		{
-			coll.enabled = false;
-		}
-	}
+    protected void DisableAllColliders()
+    {
+        foreach (Collider2D coll in allColliders)
+        {
+            coll.enabled = false;
+        }
+    }
 
     /*
      * Funkcja obraca postać.
@@ -82,9 +83,9 @@ public abstract class Character : MonoBehaviour
     protected void Flip()
     {
         inputs.isFacingLeft = !inputs.isFacingLeft;
-        
+
         Vector3 Flip = transform.localScale;
-        
+
         Flip.x *= -1;
 
         transform.localScale = Flip;
@@ -96,67 +97,79 @@ public abstract class Character : MonoBehaviour
 
     protected void Attack()
     {
+        if (attackTimer == 0f)
+        {
+            if (inputs.fire)
+            {
+                attackTimer = attackSpead;
+                Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
 
-        Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
+                if (inputs.isFacingLeft)
+                    clone.moveDirection = -1.0f;
+                else
+                    clone.moveDirection = 1.0f;
+                clone.name = tag;
 
-        if (inputs.isFacingLeft)
-            clone.moveDirection = -1.0f;
+                inputs.fire = false;
+            }
+        }
         else
-            clone.moveDirection = 1.0f;
-
-        inputs.fire = false;
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer < 0)
+                attackTimer = 0;
+        }
     }
 
     /*
      * Funkcja poruszania się.
      */
-    
+
     protected void Move()
     {
-        rigidbody2D.velocity = new Vector2(inputs.horizontalInput * maxSpeed, rigidbody2D.velocity.y);
-        
-        if (inputs.horizontalInput < 0 && !inputs.isFacingLeft)
-            Flip();
-        
-        if (inputs.horizontalInput > 0 && inputs.isFacingLeft)
-            Flip();
+        if ((inputs.isGrounded && !inputs.isLadderClimbing)
+                || !inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
+        {
+
+            rigidbody2D.velocity = new Vector2(inputs.horizontalInput_left * maxSpeed, rigidbody2D.velocity.y);
+
+            if (inputs.horizontalInput_left < 0 && !inputs.isFacingLeft)
+                Flip();
+
+            if (inputs.horizontalInput_left > 0 && inputs.isFacingLeft)
+                Flip();
+        }
     }
-    
+
     /*
      * Funkcja Skoku.
      */
-    
+
     protected void Jump()
     {
-        rigidbody2D.AddForce(new Vector2(0, jumpForce));
-        inputs.jump = false;
+        if (inputs.jump && inputs.isGrounded)             //   Warunki wywołania akcji skoku.             
+        {
+
+            rigidbody2D.AddForce(new Vector2(0, jumpForce));
+            inputs.jump = false;
+        }
     }
+
     /*
      * Funkcja wspinajaca.
      */
-    
-    
+
+
     protected void Climb()
-    {/*
-        float x, y, z;  //  Zmienne do określenia pozycji
-        
-        x = y = z = 0;  //  Zerowanie zmiennych.
-        
-        x = transform.position.x + inputs.horizontalInput;     //  Ustalanie x     //  Mechanizm powinien być 
-        //  ulepszony. Pozwala na okreśenie 
-        y = boxCollider.transform.position.y + 2f;      //  Ustalanie y     //  gdzie po wespnięciu powinien się znaleść gracz.
-        
-        transform.position = new Vector3(x, y, z);      //  Ustalenie nowej pozycji gracza
-        
-        rigidbody2D.gravityScale = 1;                   //  Włączenie ponownie grawitacji.
-        
-        inputs.isClimbing = false;                                  //  Ustawienie frali wspoinania na fałsz.
-        */
+    {
     }
 
     protected void LadderClimb()
     {
-        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput * maxSpeed);
+        if (inputs.isLadderClimbing)
+        {
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput_left * maxSpeed);
+        }
     }
 
     /*
@@ -177,30 +190,30 @@ public abstract class Character : MonoBehaviour
             {
                 inputs.isGetOnLadder = true;
             }
-            
+
             inputs.isLadderClimbing = true;
-            
+
             rigidbody2D.gravityScale = 0;
-            
+
             float offset = 0f;
-            
+
             if (coll.gameObject.transform.localScale.x > 0)
                 offset = 0.5f;
             else
                 offset = -0.5f;
-            
+
             transform.position = new Vector3(coll.gameObject.transform.position.x + offset, transform.position.y, transform.position.z);
-            
+
             if (coll.gameObject.transform.localScale.x > 0 && transform
                 .localScale.x < 0)
                 Flip();
-            
+
             if (coll.gameObject.transform.localScale.x < 0 && transform
                 .localScale.x > 0)
                 Flip();
-            
-        } 
-        
+
+        }
+
         if (coll.gameObject.tag == "Ladder" && !inputs.action && inputs.isLadderClimbing)
         {
             rigidbody2D.gravityScale = 1;
@@ -209,58 +222,17 @@ public abstract class Character : MonoBehaviour
         }
 
     }
-    /*
-     * Funkcje kolizji 
-     */
 
-    void OnCollisionEnter2D(Collision2D coll)
+    protected void Dies()
     {
-    }
-    
-    void OnCollisionStay2D(Collision2D coll)
-    {
-    }
-    
-    void OnCollisionExit2D(Collision2D coll)
-    {
-    }
-
-    void OnTriggerEnter2D(Collider2D coll)
-    {  
-        if (coll.gameObject.tag == "Wall")
+        if (Health <= 0)
         {
-            coll.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        }
+            DisableAllColliders();
+            rigidbody2D.gravityScale = 0;
+            rigidbody2D.velocity = Vector2.zero;
 
-        if (coll.gameObject.tag == "Stairs")
-        {   
-            inputs.isStairsClimbing = true;
-        }
-
-    }
-
-    void OnTriggerStay2D(Collider2D coll)
-    {
-        LadderInteraction(coll);
-    }
-    
-    void OnTriggerExit2D(Collider2D coll)
-    {   
-        if (coll.gameObject.tag == "Ladder")
-        {
-            inputs.isLadderClimbing = false;
-            rigidbody2D.gravityScale = 1;
-        }
-
-        if (coll.gameObject.tag == "Wall")
-        {
-            coll.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        if (coll.gameObject.tag == "Stairs")
-        {   
-            inputs.isStairsClimbing = false;
+            this.enabled = false;
         }
 
     }
-
 }

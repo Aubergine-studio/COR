@@ -3,23 +3,28 @@ using System.Collections;
 
 public class HumanoidAnimatorController : AnimatorController
 {
-	public float attack = 	0.0f;		//	Zmienna determinujaca animacje ataku.
-	private AnimatorStateInfo animationStatus;
+    private AnimatorStateInfo animationStatus;
+    int AttaksHash = Animator.StringToHash("Base Layer.Attacks");
+    Player player;
 
-	int AttaksHash = Animator.StringToHash("Base Layer.Attacks");
+    new void Start()
+    {
+        base.Start();
+        player = GetComponent<Player>();
+    }
 
-	
-	protected override void ControlAnimator ()
-	{
-		animationStatus = animator.GetCurrentAnimatorStateInfo(0);
+    protected override void ControlAnimator()
+    {
+        animationStatus = animator.GetCurrentAnimatorStateInfo(0);
 
-		if(inputs.fire && AttaksHash != animationStatus.nameHash)
-		{
-			attack = Random.Range(1, 3);
-		}
+        if (inputs.fire)// && AttaksHash != animationStatus.nameHash)
+        {
+            animator.SetTrigger("Fire");
+            animator.SetFloat("Attack", Random.Range(1f, 2f));
+            animator.SetFloat("Weapon", player.projectileIndex + 1);
+        }
 
-		animator.SetBool ("Ground", inputs.isGrounded);
-		animator.SetBool ("Fire", inputs.fire);
+        animator.SetBool("Ground", inputs.isGrounded);
         animator.SetBool("LadderClimbing", inputs.isLadderClimbing);
 
         if (inputs.isGetOnLadder)
@@ -27,13 +32,24 @@ public class HumanoidAnimatorController : AnimatorController
             animator.SetTrigger("OnLadder");
             inputs.isGetOnLadder = false;
         }
-		animator.SetFloat ("Attack", attack);
-		animator.SetFloat ("vSpeed", rigidbody2D.velocity.y);
-		animator.SetFloat ("Speed", Mathf.Abs(inputs.horizontalInput));
-	}
+        animator.SetFloat("vSpeed", rigidbody2D.velocity.y);
+        animator.SetFloat("Speed", Mathf.Abs(inputs.horizontalInput_left));
 
-	public bool GetAttackStatus()
-	{
-		return AttaksHash == animationStatus.nameHash ? true : false;
-	}
+        if (chracter.Health <= 0)
+        {
+            animator.SetTrigger("IsDead");
+            this.enabled = false;
+        }
+
+        if (inputs.inCombat)
+            animator.SetFloat("Status", 1f);
+        else
+            animator.SetFloat("Status", 0f);
+
+    }
+
+    public bool GetAttackStatus()
+    {
+        return AttaksHash == animationStatus.nameHash ? true : false;
+    }
 }

@@ -5,6 +5,7 @@ public class Stairs : UsableItem
 {
     private Collider2D stairsCollider;
     public Transform dezactiveTrigger;
+    public GameObject ActionButtonIcon;
 
     new void Start()
     {
@@ -36,6 +37,13 @@ public class Stairs : UsableItem
         {
             if (stairsCollider.enabled) stairsCollider.enabled = false;
         }
+
+        ActionButtonIcon.SetActive(true);
+    }
+
+    void OnTriggerExit2D(Collider2D coll)
+    {
+        ActionButtonIcon.SetActive(false);
     }
 
     void Update()
@@ -47,12 +55,12 @@ public class Stairs : UsableItem
                 stairsCollider.enabled = true;
             }
         }
-        
-        Collider2D c =  Physics2D.OverlapPoint(dezactiveTrigger.position);
-        
-           if(c != null && c.gameObject.tag == "Player")
-           {
-               stairsCollider.enabled = false;
-           }
+
+        Collider2D c = Physics2D.OverlapPoint(dezactiveTrigger.position);
+
+        if (c != null && c.gameObject.tag == "Player")
+        {
+            stairsCollider.enabled = false;
+        }
     }
 }

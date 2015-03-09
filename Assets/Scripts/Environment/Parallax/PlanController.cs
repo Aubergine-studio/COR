@@ -44,7 +44,7 @@ public class PlanController : MonoBehaviour
     /// Odpowiada na odpowiednie przesuwanie segmentów
     /// planu paralaksy.
     /// </summary>
-    void Update()
+    void FixedUpdate()
     {
         #region Sterowanie triggerami.
 

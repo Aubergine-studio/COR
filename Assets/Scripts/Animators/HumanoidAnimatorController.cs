@@ -19,9 +19,11 @@ public class HumanoidAnimatorController : AnimatorController
 
         if (inputs.fire)// && AttaksHash != animationStatus.nameHash)
         {
+            Debug.Log("Trigger animacji.");
             animator.SetTrigger("Fire");
             animator.SetFloat("Attack", Random.Range(1f, 2f));
             animator.SetFloat("Weapon", player.projectileIndex + 1);
+            inputs.fire = false;
         }
 
         animator.SetBool("Ground", inputs.isGrounded);

@@ -60,29 +60,7 @@ public class InputCollector : MonoBehaviour
         if (Input.GetButtonUp("Use"))
             inputs.action = false;
 
-   
-        //if (Input.GetKeyDown(KeyCode.JoystickButton1))      //  Atak
-        //    inputs.fire = true;
-		
-        //if (Input.GetKeyUp(KeyCode.JoystickButton1))
-        //    inputs.fire = false;
-		
-        //if (Input.GetKeyDown(KeyCode.Joystick1Button2))     //  Akcja
-        //    inputs.action = true;
-		
-        //if (Input.GetKeyUp(KeyCode.Joystick1Button2))
-        //    inputs.action = false;
-		
-        //if (Input.GetKeyDown(KeyCode.Joystick1Button0))      //  Skok.
-        //    inputs.jump = true;
-		
-        //if (Input.GetKeyUp(KeyCode.Joystick1Button0))     
-        //    inputs.jump = false;
-		
-		/*
-		 * TMP
-		 */
-		
+   		
 		if (Input.GetKeyDown(KeyCode.Mouse0))      //  Atak
 			inputs.fire = true;
 		

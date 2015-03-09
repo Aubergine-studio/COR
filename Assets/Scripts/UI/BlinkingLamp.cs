@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BlinkingLamp : MonoBehaviour
 {
-    public GameObject light;
+    public GameObject _light;
     private int index = 0;
     private List<float> blinksTimes = new List<float>();
     private float blinkingInterwal;
@@ -39,8 +39,7 @@ public class BlinkingLamp : MonoBehaviour
                 {
                     index++;
                 } 
-
-                light.SetActive(!light.active);
+                _light.SetActive(!_light.activeSelf);
             }
             else
             {

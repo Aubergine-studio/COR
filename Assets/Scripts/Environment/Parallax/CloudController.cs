@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class CloudController : MonoBehaviour 
 {
     void OnTriggerEnter2D(Collider2D coll)

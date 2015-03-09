@@ -27,9 +27,9 @@ public class ParallaxController : MonoBehaviour
     #endregion
 
     #region Ciało fizyczne gracza
-    
+
     private Rigidbody2D _playerRB;                  //  Ciało fizyczne gracza. Wartości przyspieszenia tego ciała 
-                                                    //  starują ruchem paralaksy
+    //  starują ruchem paralaksy
     public Rigidbody2D PlayerRB
     {
         set { _playerRB = value; }
@@ -46,43 +46,44 @@ public class ParallaxController : MonoBehaviour
     void Start()
     {
         #region Inicjalizowanie wartości zmiennych
-
+        
+   //     cloud = Resources.Load("Cloud") as GameObject;
         // Pobranie referencji na ciało fizyczne gracza
         _playerRB = GetComponentInParent<CameraTracking>().player.GetComponent<Rigidbody2D>();
         //  Pobranie renderera spritów z obiektu tła nieba
         skybox.GetComponent<SpriteRenderer>().sprite = skyboxSprite;
         //  Inicjalizacja licznika kontrolującego czas pokzywania się chmur
         cloudsSpawnTimer = cloudsSpawnTime;
-
+        
         #endregion
-        
-        #region Instancjonowanie chmur
 
-        for (int i = 0; i < cloudsCount; ++i)
-        {
-            cloudsObjects.Add((Instantiate(cloud, new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight), 0),
-                                                      Quaternion.identity) as GameObject));
-            cloudsObjects[i].transform.parent = transform;
-            cloudsObjects[i].SetActive(false);
-        }
-        
+        #region Instancjonowanie chmur
+            for (int i = 0; i < cloudsCount; ++i)
+            {
+                GameObject o = (Instantiate(cloud, new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight), 0),
+                                                          Quaternion.identity) as GameObject);
+                cloudsObjects.Add(o);
+                cloudsObjects[i].transform.parent = transform;
+                cloudsObjects[i].SetActive(false);
+            }
         #endregion
     }
+
     /// <summary>
     /// W tej metodzie kontrolowane są chmurki.
     /// </summary>
     void Update()
     {
         #region Spowner chmur
-        
+
         // Jeśli upłynął czas po, którym miała pojawić się chmurka.
         if (cloudsSpawnTimer <= 0)
-        {   
+        {
             //  Wyszukiwania jest pierwsza nieaktywny obiekt chmurki
-            for (int i = 0; i < cloudsCount; ++i)
+            for (int i = 0; i < cloudsObjects.Count; ++i)
             {
                 if (!cloudsObjects[i].activeSelf)
-                { 
+                {
                     //  Losowana jest nowa pozycja chmurki
                     cloudsObjects[i].transform.localPosition = new Vector3(20, Random.Range(cloudsMinSpawnHeight, cloudsMaxSpawnHeight));
                     //  Następuje ponowna aktywacja chmurki
@@ -105,6 +106,6 @@ public class ParallaxController : MonoBehaviour
 
         #endregion
     }
-    
+
     #endregion
 }

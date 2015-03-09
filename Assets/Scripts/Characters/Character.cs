@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public abstract class Character : MonoBehaviour
 {
@@ -50,6 +51,11 @@ public abstract class Character : MonoBehaviour
 
     protected void Start()
     {
+        //projectileType = new GameObject[2];
+
+        //projectileType[0] = Resources.Load("Hit") as GameObject;
+        //projectileType[1] = Resources.Load("Knife") as GameObject;
+
         animator = GetComponent<Animator>();
         inputs = GetComponent<Inputs>();
         animatorController = GetComponent<AnimatorController>();
@@ -101,16 +107,19 @@ public abstract class Character : MonoBehaviour
         {
             if (inputs.fire)
             {
+                Debug.Log("Spawn pocisku.");
+
                 attackTimer = attackSpead;
+
                 Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
 
                 if (inputs.isFacingLeft)
                     clone.moveDirection = -1.0f;
                 else
                     clone.moveDirection = 1.0f;
+
                 clone.name = tag;
 
-                inputs.fire = false;
             }
         }
         else
@@ -118,6 +127,7 @@ public abstract class Character : MonoBehaviour
             attackTimer -= Time.deltaTime;
             if (attackTimer < 0)
                 attackTimer = 0;
+            inputs.fire = false;
         }
     }
 

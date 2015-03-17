@@ -20,6 +20,8 @@ public class UIMenager : MonoBehaviour
     public Sprite d_pad_right;
     public Image d_pad;
 
+    public GameObject inGameMenu;
+
     void Start()
     {
         HP.value = HP.maxValue = _player.Health;
@@ -43,5 +45,7 @@ public class UIMenager : MonoBehaviour
 
         if (_inputs.d_pad_y == 0f && _inputs.d_pad_x == 0f)
             d_pad.sprite = d_pad_normal;
+
+        inGameMenu.SetActive(_inputs.inGameMenu);
     }
 }

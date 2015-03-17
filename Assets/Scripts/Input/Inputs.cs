@@ -4,12 +4,12 @@ using System.Collections;
 public class Inputs : MonoBehaviour
 {
 
-    public bool isFacingLeft = true;        	//  Obracanie postaci.
+    public bool isFacingLeft = true;        //  Obracanie postaci.
     public bool isGrounded = false;       	//  Czy postać jest uziemiona?
     public bool isClimbing = false;       	//  Gotowość postaci do wspinaczki
 
     public bool isGetOnLadder = false;
-    public bool isLadderClimbing = false;        //  Wspinaczka po drabinie.
+    public bool isLadderClimbing = false;   //  Wspinaczka po drabinie.
 
     public bool isStairsClimbing = false;
 
@@ -32,5 +32,6 @@ public class Inputs : MonoBehaviour
 
     public bool jump = false;      //  Flaga skoku.
     public bool fire = false;      //  Flaga ataku(w ręcz, na dystns).
-    public bool action = false;      //  Flaga akcji.
+    public bool action = false;    //  Flaga akcji.
+    public bool inGameMenu = false;
 }

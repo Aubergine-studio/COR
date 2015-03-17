@@ -60,6 +60,8 @@ public class InputCollector : MonoBehaviour
         if (Input.GetButtonUp("Use"))
             inputs.action = false;
 
+        if (Input.GetButtonDown("InGameMenu"))     //  Atak
+            inputs.inGameMenu = !inputs.inGameMenu;
    		
 		if (Input.GetKeyDown(KeyCode.Mouse0))      //  Atak
 			inputs.fire = true;

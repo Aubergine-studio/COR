@@ -21,17 +21,20 @@ public class Player : Character
     override
     protected void Actions()
     {
-        Jump();
-
-        if (inputs.action && inputs.isClimbing)              //    Warunki wywołania akcji wsponania.
+        if (!inputs.inGameMenu)
         {
+            Jump();
+
+            if (inputs.action && inputs.isClimbing)              //    Warunki wywołania akcji wsponania.
+            {
+            }
+
+            Move();
+
+            Attack();
+
+            LadderClimb();
         }
-
-        Move();
-
-        Attack();
-
-        LadderClimb();
     }
 
     void ColiderControl()

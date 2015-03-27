@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : Character
 {
     private int experience;
-
+    public List<Quest> questLog =  new List<Quest>();
+    
     public int Exp
     {
         get { return experience; }

@@ -70,8 +70,19 @@ public class Player : Character
         else
             inputs.inCombat = false;
 
+
         if (inputs.d_pad_y == 1f)
             selectedProjectile = 1;
+
+        if (inputs.d_pad_y == -1f)
+            selectedProjectile = 2;
+
+        if (inputs.d_pad_x == 1f)
+            selectedProjectile = 0;
+
+        //if (inputs.d_pad_x == -1f)
+        //    selectedProjetile = 2;
+
         Dies();
     }
 

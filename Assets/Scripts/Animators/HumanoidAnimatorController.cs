@@ -4,6 +4,8 @@ using System.Collections;
 public class HumanoidAnimatorController : AnimatorController
 {
     private AnimatorStateInfo animationStatus;
+    public float smokingInterval = 30;
+    private float smokingTime;
     int AttaksHash = Animator.StringToHash("Base Layer.Attacks");
     Player player;
 
@@ -11,6 +13,7 @@ public class HumanoidAnimatorController : AnimatorController
     {
         base.Start();
         player = GetComponent<Player>();
+        smokingTime = smokingInterval;
     }
 
     protected override void ControlAnimator()
@@ -18,6 +21,17 @@ public class HumanoidAnimatorController : AnimatorController
         if (!inputs.inGameMenu)
         {
             animationStatus = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (inputs.isGrounded && inputs.horizontalInput_left == 0 && smokingTime <= 0)
+            {
+                smokingTime = smokingInterval;
+                animator.SetTrigger("Smoke");
+            }
+            else smokingTime -= Time.deltaTime;
+            if(Mathf.Abs(inputs.horizontalInput_left) > 0)
+            {
+                smokingTime = smokingInterval;
+            }
 
             if (inputs.fire)// && AttaksHash != animationStatus.nameHash)
             {

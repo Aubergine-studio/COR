@@ -112,9 +112,13 @@ public abstract class Character : MonoBehaviour
                 attackTimer = attackSpead;
 
                 Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
-
                 if (inputs.isFacingLeft)
+                {
                     clone.moveDirection = -1.0f;
+                    Transform ctransform =  clone.GetComponent<Transform>();
+                    ctransform.localScale = new Vector3(ctransform.localScale.x *-1, ctransform.localScale.y, ctransform.localScale.z);
+
+                }
                 else
                     clone.moveDirection = 1.0f;
 

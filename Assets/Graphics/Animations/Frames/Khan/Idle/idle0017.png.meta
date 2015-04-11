@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 781df723f608bba48a03c6117fbc59c6
+guid: 02bb69e9fdc8504489ca91870791b0fa
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
@@ -42,8 +42,8 @@ TextureImporter:
   textureType: 8
   buildTargetSettings:
   - buildTarget: Standalone
-    maxTextureSize: 4096
-    textureFormat: -1
+    maxTextureSize: 1024
+    textureFormat: -3
     compressionQuality: 50
   spriteSheet:
     sprites: []

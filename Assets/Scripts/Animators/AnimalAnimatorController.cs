@@ -5,16 +5,16 @@ public class AnimalAnimatorController : AnimatorController
 {
     protected override void ControlAnimator()
     {
-        animator.SetFloat("Speed", Mathf.Abs(inputs.horizontalInput_left));
+        Animator.SetFloat("Speed", Mathf.Abs(Inputs.horizontalInput_left));
         
-        if(inputs.fire)
+        if(Inputs.fire)
         {
-            animator.SetTrigger("Attack");
+            Animator.SetTrigger("Attack");
         }
 
-        if (chracter.Health <= 0)
+        if (Chracter.Health <= 0)
         {
-            animator.SetTrigger("IsDead");
+            Animator.SetTrigger("IsDead");
             this.enabled = false;
         }
     }

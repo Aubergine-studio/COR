@@ -3,16 +3,16 @@ using System.Collections;
 
 public abstract class AnimatorController : MonoBehaviour
 {
-    protected Animator animator;
-    protected Inputs inputs;
-    protected Character chracter;
+    protected Animator Animator;
+    protected Inputs Inputs;
+    protected Character Chracter;
 
     // Use this for initialization
     protected void Start()
     {
-        animator = gameObject.GetComponent<Animator>();
-        inputs = gameObject.GetComponent<Inputs>();
-        chracter = gameObject.GetComponent<Character>();
+        Animator = gameObject.GetComponent<Animator>();
+        Inputs = gameObject.GetComponent<Inputs>();
+        Chracter = gameObject.GetComponent<Character>();
     }
 
     protected abstract void ControlAnimator();

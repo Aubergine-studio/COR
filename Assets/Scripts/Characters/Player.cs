@@ -23,11 +23,11 @@ public class Player : Character
     override
     protected void Actions()
     {
-        if (!inputs.inGameMenu)
+        if (!Inputs.inGameMenu)
         {
             Jump();
 
-            if (inputs.action && inputs.isClimbing)              //    Warunki wywołania akcji wsponania.
+            if (Inputs.action && Inputs.isClimbing)              //    Warunki wywołania akcji wsponania.
             {
             }
 
@@ -41,20 +41,20 @@ public class Player : Character
 
     void ColiderControl()
     {
-        if (rigidbody2D.velocity.y < 0 && !inputs.isGrounded)
+        if (rigidbody2D.velocity.y < 0 && !Inputs.isGrounded)
         {
-            legsCollider.center = new Vector2(legsCollider.center.x, -2.8f);
+            LegsCollider.center = new Vector2(LegsCollider.center.x, -2.8f);
         }
 
-        if (rigidbody2D.velocity.y > 0 && !inputs.isGrounded)
+        if (rigidbody2D.velocity.y > 0 && !Inputs.isGrounded)
         {
-            legsCollider.center = new Vector2(legsCollider.center.x, 0.5f);
+            LegsCollider.center = new Vector2(LegsCollider.center.x, 0.5f);
         }
     }
 
     void Update()
     {
-        inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, isOnGroundRadius, Ground);
+        Inputs.isGrounded = Physics2D.OverlapCircle(IsOnGround.position, IsOnGroundRadius, Ground);
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 30f);
         int enemiesCount = 0;
         foreach (Collider2D coll in enemies)
@@ -66,19 +66,19 @@ public class Player : Character
         }
 
         if (enemiesCount > 0)
-            inputs.inCombat = true;
+            Inputs.inCombat = true;
         else
-            inputs.inCombat = false;
+            Inputs.inCombat = false;
 
 
-        if (inputs.d_pad_y == 1f)
-            selectedProjectile = 1;
+        if (Inputs.d_pad_y == 1f)
+            SelectedProjectile = 1;
 
-        if (inputs.d_pad_y == -1f)
-            selectedProjectile = 2;
+        if (Inputs.d_pad_y == -1f)
+            SelectedProjectile = 2;
 
-        if (inputs.d_pad_x == 1f)
-            selectedProjectile = 0;
+        if (Inputs.d_pad_x == 1f)
+            SelectedProjectile = 0;
 
         //if (inputs.d_pad_x == -1f)
         //    selectedProjetile = 2;
@@ -101,7 +101,7 @@ public class Player : Character
     {
         if (coll.gameObject.tag == "Stairs")
         {
-            bodyCollider.enabled = false;
+            BodyCollider.enabled = false;
         }
     }
 
@@ -109,7 +109,7 @@ public class Player : Character
     {
         if (coll.gameObject.tag == "Enemy")
         {
-            foreach (Collider2D c in allColliders)
+            foreach (Collider2D c in AllColliders)
                 Physics2D.IgnoreCollision(coll.collider, c);
         }
     }
@@ -118,7 +118,7 @@ public class Player : Character
     {
         if (coll.gameObject.tag == "Stairs")
         {
-            bodyCollider.enabled = true;
+            BodyCollider.enabled = true;
         }
     }
 
@@ -131,7 +131,7 @@ public class Player : Character
 
         if (coll.gameObject.tag == "Stairs")
         {
-            inputs.isStairsClimbing = true;
+            Inputs.isStairsClimbing = true;
         }
 
         if (coll.tag == "Projectile" && coll.name == "Enemy")
@@ -149,7 +149,7 @@ public class Player : Character
     {
         if (coll.gameObject.tag == "Ladder")
         {
-            inputs.isLadderClimbing = false;
+            Inputs.isLadderClimbing = false;
             rigidbody2D.gravityScale = 1;
         }
 
@@ -159,7 +159,7 @@ public class Player : Character
         }
         if (coll.gameObject.tag == "Stairs")
         {
-            inputs.isStairsClimbing = false;
+            Inputs.isStairsClimbing = false;
         }
 
     }

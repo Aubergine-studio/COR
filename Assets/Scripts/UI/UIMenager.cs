@@ -1,51 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-
-public class UIMenager : MonoBehaviour
+public class UiMenager : MonoBehaviour
 {
-
-    public Character _player;
-    public Inputs _inputs;
-
-    public Slider HP;
-    public Slider MP;
+    public Inputs Inputs;
+    public Character Player;
+    public Image DPad;
+    public Sprite DPadDown;
+    public Sprite DPadLeft;
+    public Sprite DPadNormal;
+    public Sprite DPadRight;
+    public Sprite DPadUp;
+    public Slider Hp;
+    public GameObject InGameMenu;
+    public Slider Mp;
     public Slider Stamina;
 
-    public Sprite d_pad_normal;
-    public Sprite d_pad_up;
-    public Sprite d_pad_down;
-    public Sprite d_pad_left;
-    public Sprite d_pad_right;
-    public Image d_pad;
-
-    public GameObject inGameMenu;
-
-    void Start()
+    private void Start()
     {
-        HP.value = HP.maxValue = _player.Health;
-        MP.value = MP.maxValue = _player.Mana;
-        Stamina.value = Stamina.maxValue = _player.Stamina;
+        Hp.value = Hp.maxValue = Player.Health;
+        Mp.value = Mp.maxValue = Player.Mana;
+        Stamina.value = Stamina.maxValue = Player.Stamina;
     }
 
-    void Update()
+    private void Update()
     {
-        HP.value = _player.Health;
+        Hp.value = Player.Health;
 
-        if (_inputs.d_pad_x == 1f)
-            d_pad.sprite = d_pad_right;
-        if (_inputs.d_pad_x == -1f)
-            d_pad.sprite = d_pad_left;
+        if (Inputs.d_pad_x == 1f)
+            DPad.sprite = DPadRight;
+        if (Inputs.d_pad_x == -1f)
+            DPad.sprite = DPadLeft;
 
-        if (_inputs.d_pad_y == 1f)
-            d_pad.sprite = d_pad_up;
-        if (_inputs.d_pad_y == -1f)
-            d_pad.sprite = d_pad_down;
+        if (Inputs.d_pad_y == 1f)
+            DPad.sprite = DPadUp;
+        if (Inputs.d_pad_y == -1f)
+            DPad.sprite = DPadDown;
 
-        if (_inputs.d_pad_y == 0f && _inputs.d_pad_x == 0f)
-            d_pad.sprite = d_pad_normal;
+        if (Inputs.d_pad_y == 0f && Inputs.d_pad_x == 0f)
+            DPad.sprite = DPadNormal;
 
-        inGameMenu.SetActive(_inputs.inGameMenu);
+        InGameMenu.SetActive(Inputs.inGameMenu);
     }
 }

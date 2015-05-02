@@ -5,7 +5,7 @@ public class NPC : Character
 {
 	protected override void Actions ()
 	{
-		inputs.isGrounded = true;
+		Inputs.isGrounded = true;
 	}
 
 	void Update()

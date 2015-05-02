@@ -8,41 +8,41 @@ public abstract class Character : MonoBehaviour
     /*
      *  Dodatkowe elementy związane z sterowaniem postacią. 
      */
-    public Transform isOnGround;                    //  Pozycja Obiektu wykrywajacego ziemie.
-    public float isOnGroundRadius = 0.2f;
+    public Transform IsOnGround;                    //  Pozycja Obiektu wykrywajacego ziemie.
+    public float IsOnGroundRadius = 0.2f;
     public LayerMask Ground;                    //  Maska pozwalajaca określić co jest "ziemią"
 
-    protected Animator animator;                //  Animator postaci.   TMP do zastąpienia osobną klasa.
+    protected Animator Animator;                //  Animator postaci.   TMP do zastąpienia osobną klasa.
 
-    protected AnimatorController animatorController;
+    protected AnimatorController AnimatorController;
 
-    public GameObject[] projectileType;
-    public Transform projectileSpawn;
-    protected int selectedProjectile = 0;
-    public int projectileIndex
+    public GameObject[] ProjectileType;
+    public Transform ProjectileSpawn;
+    protected int SelectedProjectile = 0;
+    public int ProjectileIndex
     {
-        get { return selectedProjectile; }
+        get { return SelectedProjectile; }
     }
 
-    public CircleCollider2D legsCollider;
-    public BoxCollider2D bodyCollider;
-    protected List<Collider2D> allColliders = new List<Collider2D>();
-    public List<Collider2D> collidersList
+    public CircleCollider2D LegsCollider;
+    public BoxCollider2D BodyCollider;
+    protected List<Collider2D> AllColliders = new List<Collider2D>();
+    public List<Collider2D> CollidersList
     {
-        get { return allColliders; }
+        get { return AllColliders; }
     }
 
     #region Parametry postaci
 
-    public float maxSpeed = 10f;        //  Maksymalna prędkośc poruszania się. 
-    public float jumpForce = 400f;      //  Siła skoku.
-    protected Inputs inputs;            //  Wejścia.
+    public float MaxSpeed = 10f;        //  Maksymalna prędkośc poruszania się. 
+    public float JumpForce = 400f;      //  Siła skoku.
+    protected Inputs Inputs;            //  Wejścia.
 
     public float Health = 100.0f;       //  Zdrowie.
     public float Mana = 100.0f;         //  Mana
     public float Stamina = 100.0f;      //  Stamina
-    public float attackSpead = 1f;
-    private float attackTimer = 0f;
+    public float AttackSpead = 1f;
+    private float _attackTimer = 0f;
 
     #endregion
     /*
@@ -56,27 +56,27 @@ public abstract class Character : MonoBehaviour
         //projectileType[0] = Resources.Load("Hit") as GameObject;
         //projectileType[1] = Resources.Load("Knife") as GameObject;
 
-        animator = GetComponent<Animator>();
-        inputs = GetComponent<Inputs>();
-        animatorController = GetComponent<AnimatorController>();
-        legsCollider = GetComponent<CircleCollider2D>();
+        Animator = GetComponent<Animator>();
+        Inputs = GetComponent<Inputs>();
+        AnimatorController = GetComponent<AnimatorController>();
+        LegsCollider = GetComponent<CircleCollider2D>();
 
         CircleCollider2D[] c = gameObject.GetComponents<CircleCollider2D>();
         foreach (Collider2D coll in c)
         {
-            allColliders.Add(coll);
+            AllColliders.Add(coll);
         }
         BoxCollider2D[] b = GetComponents<BoxCollider2D>();
 
         foreach (Collider2D coll in b)
         {
-            allColliders.Add(coll);
+            AllColliders.Add(coll);
         }
     }
 
     protected void DisableAllColliders()
     {
-        foreach (Collider2D coll in allColliders)
+        foreach (Collider2D coll in AllColliders)
         {
             coll.enabled = false;
         }
@@ -88,7 +88,7 @@ public abstract class Character : MonoBehaviour
 
     protected void Flip()
     {
-        inputs.isFacingLeft = !inputs.isFacingLeft;
+        Inputs.isFacingLeft = !Inputs.isFacingLeft;
 
         Vector3 Flip = transform.localScale;
 
@@ -103,16 +103,16 @@ public abstract class Character : MonoBehaviour
 
     protected void Attack()
     {
-        if (attackTimer == 0f)
+        if (_attackTimer == 0f)
         {
-            if (inputs.fire)
+            if (Inputs.fire)
             {
                 Debug.Log("Spawn pocisku.");
 
-                attackTimer = attackSpead;
+                _attackTimer = AttackSpead;
 
-                Projectile clone = (Instantiate(projectileType[selectedProjectile], projectileSpawn.position, projectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
-                if (inputs.isFacingLeft)
+                Projectile clone = (Instantiate(ProjectileType[SelectedProjectile], ProjectileSpawn.position, ProjectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
+                if (Inputs.isFacingLeft)
                 {
                     clone.moveDirection = -1.0f;
                     Transform ctransform =  clone.GetComponent<Transform>();
@@ -128,10 +128,10 @@ public abstract class Character : MonoBehaviour
         }
         else
         {
-            attackTimer -= Time.deltaTime;
-            if (attackTimer < 0)
-                attackTimer = 0;
-            inputs.fire = false;
+            _attackTimer -= Time.deltaTime;
+            if (_attackTimer < 0)
+                _attackTimer = 0;
+            Inputs.fire = false;
         }
     }
 
@@ -141,16 +141,16 @@ public abstract class Character : MonoBehaviour
 
     protected void Move()
     {
-        if ((inputs.isGrounded && !inputs.isLadderClimbing)
-                || !inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
+        if ((Inputs.isGrounded && !Inputs.isLadderClimbing)
+                || !Inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
         {
 
-            rigidbody2D.velocity = new Vector2(inputs.horizontalInput_left * maxSpeed, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(Inputs.horizontalInput_left * MaxSpeed, rigidbody2D.velocity.y);
 
-            if (inputs.horizontalInput_left < 0 && !inputs.isFacingLeft)
+            if (Inputs.horizontalInput_left < 0 && !Inputs.isFacingLeft)
                 Flip();
 
-            if (inputs.horizontalInput_left > 0 && inputs.isFacingLeft)
+            if (Inputs.horizontalInput_left > 0 && Inputs.isFacingLeft)
                 Flip();
         }
     }
@@ -161,11 +161,11 @@ public abstract class Character : MonoBehaviour
 
     protected void Jump()
     {
-        if (inputs.jump && inputs.isGrounded)             //   Warunki wywołania akcji skoku.             
+        if (Inputs.jump && Inputs.isGrounded)             //   Warunki wywołania akcji skoku.             
         {
 
-            rigidbody2D.AddForce(new Vector2(0, jumpForce));
-            inputs.jump = false;
+            rigidbody2D.AddForce(new Vector2(0, JumpForce));
+            Inputs.jump = false;
         }
     }
 
@@ -180,9 +180,9 @@ public abstract class Character : MonoBehaviour
 
     protected void LadderClimb()
     {
-        if (inputs.isLadderClimbing)
+        if (Inputs.isLadderClimbing)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, inputs.verticalInput_left * maxSpeed);
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, Inputs.verticalInput_left * MaxSpeed);
         }
     }
 
@@ -198,14 +198,14 @@ public abstract class Character : MonoBehaviour
 
     protected void LadderInteraction(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Ladder" && inputs.action && !inputs.isLadderClimbing)
+        if (coll.gameObject.tag == "Ladder" && Inputs.action && !Inputs.isLadderClimbing)
         {
-            if (!inputs.isLadderClimbing)
+            if (!Inputs.isLadderClimbing)
             {
-                inputs.isGetOnLadder = true;
+                Inputs.isGetOnLadder = true;
             }
 
-            inputs.isLadderClimbing = true;
+            Inputs.isLadderClimbing = true;
 
             rigidbody2D.gravityScale = 0;
 
@@ -228,10 +228,10 @@ public abstract class Character : MonoBehaviour
 
         }
 
-        if (coll.gameObject.tag == "Ladder" && !inputs.action && inputs.isLadderClimbing)
+        if (coll.gameObject.tag == "Ladder" && !Inputs.action && Inputs.isLadderClimbing)
         {
             rigidbody2D.gravityScale = 1;
-            inputs.isLadderClimbing = false;
+            Inputs.isLadderClimbing = false;
             Flip();
         }
 

@@ -14,7 +14,7 @@ public class Wander : Behavior
 
             if (collision.tag == brain.slave.tag)
             {
-                foreach (Collider2D coll in brain.slave.collidersList)
+                foreach (Collider2D coll in brain.slave.CollidersList)
                     Physics2D.IgnoreCollision(collision, coll);
             }
         }

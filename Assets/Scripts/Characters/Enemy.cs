@@ -37,7 +37,7 @@ public class Enemy : Character
                 p.Exp = experience;
             }
 
-        inputs.isGrounded = Physics2D.OverlapCircle(isOnGround.position, 0.2f, Ground);
+        Inputs.isGrounded = Physics2D.OverlapCircle(IsOnGround.position, 0.2f, Ground);
     }
 
     void OnTriggerEnter2D(Collider2D coll)

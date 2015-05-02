@@ -3,7 +3,9 @@ using System.Collections;
 
 public class HumanoidAnimatorController : AnimatorController
 {
-    private AnimatorStateInfo animationStatus;
+    private AnimatorStateInfo _animationStatus;
+    public float SmokingInterval = 30;
+    private float smokingTime;
     int AttaksHash = Animator.StringToHash("Base Layer.Attacks");
     Player player;
 
@@ -11,49 +13,61 @@ public class HumanoidAnimatorController : AnimatorController
     {
         base.Start();
         player = GetComponent<Player>();
+        smokingTime = SmokingInterval;
     }
 
     protected override void ControlAnimator()
     {
-        if (!inputs.inGameMenu)
+        if (!Inputs.inGameMenu)
         {
-            animationStatus = animator.GetCurrentAnimatorStateInfo(0);
+            _animationStatus = Animator.GetCurrentAnimatorStateInfo(0);
 
-            if (inputs.fire)// && AttaksHash != animationStatus.nameHash)
+            if (Inputs.isGrounded && Inputs.horizontalInput_left == 0 && smokingTime <= 0)
+            {
+                smokingTime = SmokingInterval;
+                Animator.SetTrigger("Smoke");
+            }
+            else smokingTime -= Time.deltaTime;
+            if(Mathf.Abs(Inputs.horizontalInput_left) > 0)
+            {
+                smokingTime = SmokingInterval;
+            }
+
+            if (Inputs.fire)// && AttaksHash != animationStatus.nameHash)
             {
                 Debug.Log("Trigger animacji.");
-                animator.SetTrigger("Fire");
-                animator.SetFloat("Attack", Random.Range(1f, 2f));
-                animator.SetFloat("Weapon", player.projectileIndex + 1);
-                inputs.fire = false;
+                Animator.SetTrigger("Fire");
+                Animator.SetFloat("Attack", Random.Range(1f, 2f));
+                Animator.SetFloat("Weapon", player.ProjectileIndex + 1);
+                Inputs.fire = false;
             }
 
-            animator.SetBool("Ground", inputs.isGrounded);
-            animator.SetBool("LadderClimbing", inputs.isLadderClimbing);
+            Animator.SetBool("Ground", Inputs.isGrounded);
+            Animator.SetBool("LadderClimbing", Inputs.isLadderClimbing);
 
-            if (inputs.isGetOnLadder)
+            if (Inputs.isGetOnLadder)
             {
-                animator.SetTrigger("OnLadder");
-                inputs.isGetOnLadder = false;
+                Animator.SetTrigger("OnLadder");
+                Inputs.isGetOnLadder = false;
             }
-            animator.SetFloat("vSpeed", rigidbody2D.velocity.y);
-            animator.SetFloat("Speed", Mathf.Abs(inputs.horizontalInput_left));
+            Animator.SetFloat("vSpeed", rigidbody2D.velocity.y);
+            Animator.SetFloat("Speed", Mathf.Abs(Inputs.horizontalInput_left));
 
-            if (chracter.Health <= 0)
+            if (Chracter.Health <= 0)
             {
-                animator.SetTrigger("IsDead");
+                Animator.SetTrigger("IsDead");
                 this.enabled = false;
             }
 
-            if (inputs.inCombat)
-                animator.SetFloat("Status", 1f);
+            if (Inputs.inCombat)
+                Animator.SetFloat("Status", 1f);
             else
-                animator.SetFloat("Status", 0f);
+                Animator.SetFloat("Status", 0f);
         }
     }
 
     public bool GetAttackStatus()
     {
-        return AttaksHash == animationStatus.nameHash ? true : false;
+        return AttaksHash == _animationStatus.nameHash ? true : false;
     }
 }

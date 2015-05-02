@@ -12,8 +12,8 @@ public class Interaction : Behavior
         {
             if (coll.tag == "Player")
             {
-                if (Mathf.Abs(coll.transform.position.x - brain.slave.projectileSpawn.transform.position.x) <=
-                brain.slave.projectileType[brain.slave.projectileIndex].GetComponent<Projectile>().projectileDistance)
+                if (Mathf.Abs(coll.transform.position.x - brain.slave.ProjectileSpawn.transform.position.x) <=
+                brain.slave.ProjectileType[brain.slave.ProjectileIndex].GetComponent<Projectile>().projectileDistance)
                 {
                     brain.inputs.horizontalInput_left = 0;
                     brain.inputs.fire = true;

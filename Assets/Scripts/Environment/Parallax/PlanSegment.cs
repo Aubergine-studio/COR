@@ -42,21 +42,24 @@ public class PlanSegment : MonoBehaviour
         #region Detekcja ruchu gracza.
         
         //  Jeżeli gracz biegnie w segment porusza się w 
-        if(_playerRb.velocity.x > 0)
+        if(_playerRb.velocity.x < -0.25f)
         {
-            rigidbody2D.velocity = new Vector2(-_speed, 0);
+            //rigidbody2D.velocity = new Vector2(-_speed, 0);
+            transform.localPosition = new Vector3(transform.localPosition.x + _speed * Time.deltaTime, transform.localPosition.y, transform.localPosition.z);
         }
 
         //  Jeżeli gracz nie prousza się, segment pozostaje w spoczynku.
         if (_playerRb.velocity.x == 0)
         {
             rigidbody2D.velocity = Vector2.zero;
+            //transform.localPosition = new Vector3(transform.localPosition.x + _speed, transform.localPosition.y, transform.localPosition.z);
         }
 
         //  Jeżeli gracz biegnie w segment porusza się w 
-        if (_playerRb.velocity.x < 0)
+        if (_playerRb.velocity.x > 0.25f)
         {
-            rigidbody2D.velocity = new Vector2(_speed, 0);
+            //rigidbody2D.velocity = new Vector2(_speed, 0);
+            transform.localPosition = new Vector3(transform.localPosition.x - _speed * Time.deltaTime, transform.localPosition.y, transform.localPosition.z);
         }
 
         #endregion

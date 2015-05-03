@@ -16,7 +16,7 @@ public class Item : MonoBehaviour
             }
     }
 
-    protected void OnTriggerStay2D(Collider2D other)
+    public void PlayerInteraction(Collider2D other)
     {
         if (other.tag == "Player")
         {

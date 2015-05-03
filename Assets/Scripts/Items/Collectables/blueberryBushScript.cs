@@ -4,7 +4,7 @@ public class blueberryBushScript : Item
 {
     public Sprite FoolSprite;
     public Sprite EmptySprite;
-    private bool _isFoll = true;
+    public bool _isFoll = true;
     private SpriteRenderer _renderer;
     private Timer timer = new Timer(15f);
 
@@ -23,7 +23,7 @@ public class blueberryBushScript : Item
         //    if (_renderer.sprite != EmptySprite)
         //        _renderer.sprite = EmptySprite;
         //    timer.Start();
-        //}
+        //} 
 
         if (timer.Count())
         {
@@ -33,9 +33,9 @@ public class blueberryBushScript : Item
         }
     }
 
-    private new void OnTriggerStay2D(Collider2D other)
+    public void OnTriggerStay2D(Collider2D other)
     {
-        base.OnTriggerStay2D(other);
+        base.PlayerInteraction(other);
         if (other.GetComponent<Inputs>().action)
         {
             _isFoll = false;

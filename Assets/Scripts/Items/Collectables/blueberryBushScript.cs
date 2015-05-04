@@ -37,12 +37,15 @@ public class blueberryBushScript : Item
     {
         if (other.tag == "Player")
         {
-            base.PlayerInteraction(other);
-            if (other.GetComponent<Inputs>().action)
+            if (_isFoll)
             {
-                _isFoll = false;
-                _renderer.sprite = EmptySprite;
-                timer.Start();
+                base.PlayerInteraction(other);
+                if (other.GetComponent<Inputs>().action)
+                {
+                    _isFoll = false;
+                    _renderer.sprite = EmptySprite;
+                    timer.Start();
+                }
             }
         }
     }

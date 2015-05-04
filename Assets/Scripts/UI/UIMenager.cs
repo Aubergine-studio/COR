@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UiMenager : MonoBehaviour
+public class UIMenager : MonoBehaviour
 {
     public Inputs Inputs;
     public Character Player;

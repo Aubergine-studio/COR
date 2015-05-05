@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     /*
-     *  Dodatkowe elementy związane z sterowaniem postacią. 
+     *  Dodatkowe elementy związane z sterowaniem postacią.
      */
     public Transform IsOnGround;                    //  Pozycja Obiektu wykrywajacego ziemie.
     public float IsOnGroundRadius = 0.2f;
@@ -19,14 +19,14 @@ public abstract class Character : MonoBehaviour
     public GameObject[] ProjectileType;
     public Transform ProjectileSpawn;
     protected int SelectedProjectile = 0;
+
     public int ProjectileIndex
     {
         get { return SelectedProjectile; }
     }
 
-    public CircleCollider2D LegsCollider;
-    public BoxCollider2D BodyCollider;
     protected List<Collider2D> AllColliders = new List<Collider2D>();
+
     public List<Collider2D> CollidersList
     {
         get { return AllColliders; }
@@ -34,7 +34,7 @@ public abstract class Character : MonoBehaviour
 
     #region Parametry postaci
 
-    public float MaxSpeed = 10f;        //  Maksymalna prędkośc poruszania się. 
+    public float MaxSpeed = 10f;        //  Maksymalna prędkośc poruszania się.
     public float JumpForce = 400f;      //  Siła skoku.
     protected Inputs Inputs;            //  Wejścia.
 
@@ -44,9 +44,10 @@ public abstract class Character : MonoBehaviour
     public float AttackSpead = 1f;
     private float _attackTimer = 0f;
 
-    #endregion
+    #endregion Parametry postaci
+
     /*
-     *  Metody 
+     *  Metody
      */
 
     protected void Start()
@@ -59,7 +60,6 @@ public abstract class Character : MonoBehaviour
         Animator = GetComponent<Animator>();
         Inputs = GetComponent<Inputs>();
         AnimatorController = GetComponent<AnimatorController>();
-        LegsCollider = GetComponent<CircleCollider2D>();
 
         CircleCollider2D[] c = gameObject.GetComponents<CircleCollider2D>();
         foreach (Collider2D coll in c)
@@ -115,15 +115,13 @@ public abstract class Character : MonoBehaviour
                 if (Inputs.isFacingLeft)
                 {
                     clone.moveDirection = -1.0f;
-                    Transform ctransform =  clone.GetComponent<Transform>();
-                    ctransform.localScale = new Vector3(ctransform.localScale.x *-1, ctransform.localScale.y, ctransform.localScale.z);
-
+                    Transform ctransform = clone.GetComponent<Transform>();
+                    ctransform.localScale = new Vector3(ctransform.localScale.x * -1, ctransform.localScale.y, ctransform.localScale.z);
                 }
                 else
                     clone.moveDirection = 1.0f;
 
                 clone.name = tag;
-
             }
         }
         else
@@ -144,7 +142,6 @@ public abstract class Character : MonoBehaviour
         if ((Inputs.isGrounded && !Inputs.isLadderClimbing)
                 || !Inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
         {
-
             rigidbody2D.velocity = new Vector2(Inputs.horizontalInput_left * MaxSpeed, rigidbody2D.velocity.y);
 
             if (Inputs.horizontalInput_left < 0 && !Inputs.isFacingLeft)
@@ -161,9 +158,8 @@ public abstract class Character : MonoBehaviour
 
     protected void Jump()
     {
-        if (Inputs.jump && Inputs.isGrounded)             //   Warunki wywołania akcji skoku.             
+        if (Inputs.jump && Inputs.isGrounded)             //   Warunki wywołania akcji skoku.
         {
-
             rigidbody2D.AddForce(new Vector2(0, JumpForce));
             Inputs.jump = false;
         }
@@ -172,7 +168,6 @@ public abstract class Character : MonoBehaviour
     /*
      * Funkcja wspinajaca.
      */
-
 
     protected void Climb()
     {
@@ -187,13 +182,13 @@ public abstract class Character : MonoBehaviour
     }
 
     /*
-     * Metoda odpowiadająca, za sterowanie postacią. 
+     * Metoda odpowiadająca, za sterowanie postacią.
      */
 
     protected abstract void Actions();
 
     /*
-     * Metody związane z interakcją. 
+     * Metody związane z interakcją.
      */
 
     protected void LadderInteraction(Collider2D coll)
@@ -225,7 +220,6 @@ public abstract class Character : MonoBehaviour
             if (coll.gameObject.transform.localScale.x < 0 && transform
                 .localScale.x > 0)
                 Flip();
-
         }
 
         if (coll.gameObject.tag == "Ladder" && !Inputs.action && Inputs.isLadderClimbing)
@@ -234,7 +228,6 @@ public abstract class Character : MonoBehaviour
             Inputs.isLadderClimbing = false;
             Flip();
         }
-
     }
 
     protected void Dies()
@@ -244,9 +237,8 @@ public abstract class Character : MonoBehaviour
             DisableAllColliders();
             rigidbody2D.gravityScale = 0;
             rigidbody2D.velocity = Vector2.zero;
-
+            Animator.Play("Dies");
             this.enabled = false;
         }
-
     }
 }

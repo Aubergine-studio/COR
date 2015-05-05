@@ -39,19 +39,6 @@ public class Player : Character
         }
     }
 
-    void ColiderControl()
-    {
-        if (rigidbody2D.velocity.y < 0 && !Inputs.isGrounded)
-        {
-            LegsCollider.center = new Vector2(LegsCollider.center.x, -2.8f);
-        }
-
-        if (rigidbody2D.velocity.y > 0 && !Inputs.isGrounded)
-        {
-            LegsCollider.center = new Vector2(LegsCollider.center.x, 0.5f);
-        }
-    }
-
     void Update()
     {
         Inputs.isGrounded = Physics2D.OverlapCircle(IsOnGround.position, IsOnGroundRadius, Ground);
@@ -99,10 +86,6 @@ public class Player : Character
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Stairs")
-        {
-            BodyCollider.enabled = false;
-        }
     }
 
     void OnCollisionStay2D(Collision2D coll)
@@ -116,10 +99,6 @@ public class Player : Character
 
     void OnCollisionExit2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Stairs")
-        {
-            BodyCollider.enabled = true;
-        }
     }
 
     void OnTriggerEnter2D(Collider2D coll)

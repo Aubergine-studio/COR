@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-[System.Serializable]
-public class Collect : Task
+public class Kill : Task
 {
-    void Update()
+    private void Update()
     {
         if (count == 0) isDone = true;
     }

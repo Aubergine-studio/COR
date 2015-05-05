@@ -18,13 +18,10 @@ public class Item : MonoBehaviour
 
     public void PlayerInteraction(Collider2D other)
     {
-        if (other.tag == "Player")
-        {
-            if (other.GetComponent<Inputs>().action)
+            if (other.tag == "Player" && other.GetComponent<Inputs>().action)
                 foreach (Quest q in players[0].questLog)
                 {
                     q.UpdateQuest(this.gameObject);
                 }
-        }
     }
 }

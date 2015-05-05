@@ -23,7 +23,7 @@ public class blueberryBushScript : Item
         //    if (_renderer.sprite != EmptySprite)
         //        _renderer.sprite = EmptySprite;
         //    timer.Start();
-        //} 
+        //}
 
         if (timer.Count())
         {
@@ -35,12 +35,18 @@ public class blueberryBushScript : Item
 
     public void OnTriggerStay2D(Collider2D other)
     {
-        base.PlayerInteraction(other);
-        if (other.GetComponent<Inputs>().action)
+        if (other.tag == "Player")
         {
-            _isFoll = false;
-            _renderer.sprite = EmptySprite;
-            timer.Start();
+            if (_isFoll)
+            {
+                base.PlayerInteraction(other);
+                if (other.GetComponent<Inputs>().action)
+                {
+                    _isFoll = false;
+                    _renderer.sprite = EmptySprite;
+                    timer.Start();
+                }
+            }
         }
     }
 }

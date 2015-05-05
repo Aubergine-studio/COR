@@ -1,6 +1,5 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Enemy : Character
 {
@@ -8,8 +7,7 @@ public class Enemy : Character
 
     public int experience = 10;
 
-
-    new void Start()
+    private new void Start()
     {
         base.Start();
         if (players.Count == 0)
@@ -27,7 +25,7 @@ public class Enemy : Character
         Dies();
     }
 
-    void Update()
+    private void Update()
     {
         Actions();
 
@@ -40,13 +38,21 @@ public class Enemy : Character
         Inputs.isGrounded = Physics2D.OverlapCircle(IsOnGround.position, 0.2f, Ground);
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
+    private void OnTriggerEnter2D(Collider2D coll)
     {
-        
         if (coll.tag == "Projectile" && coll.name == "Player")
         {
             Health -= coll.GetComponent<Projectile>().projectileDamage;
         }
     }
 
+    private new void Dies()
+    {
+        base.Dies();
+        if (Health <= 0)
+            foreach (Quest q in players[0].questLog)
+            {
+                q.UpdateQuest(this.gameObject);
+            }
+    }
 }

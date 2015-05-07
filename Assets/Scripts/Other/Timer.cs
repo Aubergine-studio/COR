@@ -5,7 +5,21 @@ public class Timer
     private float _counter = 0;
     private float _interval;
 
+    public float Interval
+    {
+        set
+        {
+            this.Stop();
+            _interval = Mathf.Abs(value);
+        }
+    }
+
     private bool _running = false;
+
+    public Timer()
+    {
+        _interval = 0;
+    }
 
     public Timer(float interval)
     {
@@ -14,7 +28,8 @@ public class Timer
 
     public void Start()
     {
-        _running = true;
+        if (_interval > 0)
+            _running = true;
     }
 
     public void Stop()

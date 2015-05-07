@@ -20,6 +20,7 @@ public class CameraMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.DownArrow)) Speed -= 0.05f;
 
         if (Input.GetKeyDown(KeyCode.KeypadEnter)) transform.position = startTransform;
+
         if (_run)
             transform.position = new Vector3(transform.position.x + (Speed * Time.deltaTime), transform.position.y, transform.position.z);
     }

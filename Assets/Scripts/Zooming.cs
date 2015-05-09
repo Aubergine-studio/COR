@@ -8,6 +8,7 @@ public class Zooming : MonoBehaviour
     public Animator[] Dark;
     public bool ZoomIn = true;
     private bool Rining = false;
+    public bool sqrsped = false;
 
     // Use this for initialization
     private void Start()

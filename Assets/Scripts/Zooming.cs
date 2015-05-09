@@ -6,6 +6,8 @@ public class Zooming : MonoBehaviour
     public float Stop = 6f;
     public float Speed = 0.1f;
     public Animator[] Dark;
+    public bool ZoomIn = true;
+    private bool Rining = false;
 
     // Use this for initialization
     private void Start()
@@ -16,14 +18,23 @@ public class Zooming : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (_camera.orthographicSize > Stop)
+        if (Input.GetKeyDown(KeyCode.Space))
+            Rining = !Rining;
+
+        if (Rining)
         {
-            _camera.orthographicSize -= Speed * Time.deltaTime;
-        }
-        if (_camera.orthographicSize < Stop)
-            foreach (var a in Dark)
+            if (_camera.orthographicSize > Stop || _camera.orthographicSize < Stop)
             {
-                a.SetTrigger("Flood");
+                if (ZoomIn)
+                    _camera.orthographicSize -= Speed * Time.deltaTime;
+                else
+                    _camera.orthographicSize += Speed * Time.deltaTime;
             }
+            if (_camera.orthographicSize < Stop)
+                foreach (var a in Dark)
+                {
+                    a.SetTrigger("Flood");
+                }
+        }
     }
 }

@@ -1,34 +1,35 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
+/// <summary>
+/// Sztuczna inteligencji.
+/// Na bazie zachowani podpiętych do postaci w odpowiednio manipuluje klasą wejść.
+/// </summary>
 public class EnemyAI : MonoBehaviour
 {
-    private Character mySlave;
-    public Character slave
+    private Character _mySlave;
+    public Character Slave
     {
-        get { return mySlave; }
+        get { return _mySlave; }
     }
     private Inputs _inputs;
     public Inputs inputs
     {
         get { return _inputs; }
     }
-    public Transform obstacleDetector;
-    public float detectorRadius = 0.3f;
-    public float sight = 10;
+    public Transform ObstacleDetector;
+    public float DetectorRadius = 0.3f;
+    public float Sight = 10;
 
-    private Behavior[] behaviors;
+    private Behavior[] _behaviors;
 
-    // Use this for initialization
     void Start()
     {
         _inputs = GetComponentInParent<Inputs>();
-        inputs.horizontalInput_left = 0f;
-        mySlave = GetComponentInParent<Enemy>();
+        inputs.HorizontalInputLeft = 0f;
+        _mySlave = GetComponentInParent<Enemy>();
 
-        behaviors = GetComponents<Behavior>();
-        foreach (Behavior b in behaviors)
+        _behaviors = GetComponents<Behavior>();
+        foreach (Behavior b in _behaviors)
         {
             b.Initialize(this);
         }
@@ -36,7 +37,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        foreach (Behavior b in behaviors)
+        foreach (Behavior b in _behaviors)
         {
             b.Behave();
         }

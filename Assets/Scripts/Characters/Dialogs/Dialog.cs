@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
+
 public class Dialog : MonoBehaviour
 {
     public GameObject Quest;

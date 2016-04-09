@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class AnimalAnimatorController : AnimatorController
 {
     protected override void ControlAnimator()
     {
-        Animator.SetFloat("Speed", Mathf.Abs(Inputs.horizontalInput_left));
+        Animator.SetFloat("Speed", Mathf.Abs(Inputs.HorizontalInputLeft));
         
-        if(Inputs.fire)
+        if(Inputs.Fire)
         {
             Animator.SetTrigger("Attack");
         }

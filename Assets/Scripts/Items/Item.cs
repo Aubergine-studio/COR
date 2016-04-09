@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public static List<Player> players = new List<Player>();
-    public static List<Inputs> inputs = new List<Inputs>();
+    public static List<Player> Players = new List<Player>();
+    public static List<Inputs> Inputs = new List<Inputs>();
 
     protected void Start()
     {
-        if (players.Count == 0)
+        if (Players.Count == 0)
             foreach (GameObject gobj in GameObject.FindGameObjectsWithTag("Player"))
             {
-                players.Add(gobj.GetComponent<Player>());
-                inputs.Add(gobj.GetComponent<Inputs>());
+                Players.Add(gobj.GetComponent<Player>());
+                Inputs.Add(gobj.GetComponent<Inputs>());
             }
     }
 
     public void PlayerInteraction(Collider2D other)
     {
-            if (other.tag == "Player" && other.GetComponent<Inputs>().action)
-                foreach (Quest q in players[0].questLog)
+            if (other.tag == "Player" && other.GetComponent<Inputs>().Action)
+                foreach (Quest q in Players[0].QuestLog)
                 {
                     q.UpdateQuest(this.gameObject);
                 }

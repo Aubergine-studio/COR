@@ -1,35 +1,33 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Player : Character
 {
-    private int experience;
-    public List<Quest> questLog =  new List<Quest>();
-    
+    private int _experience;
+    public List<Quest> QuestLog = new List<Quest>();
+
     public int Exp
     {
-        get { return experience; }
+        get { return _experience; }
         set
         {
             if (value > 0)
             {
                 Debug.Log("I get a " + value.ToString() + " experience!");
-                experience += value;
+                _experience += value;
             }
         }
     }
 
+    /// <summary>
+    /// Akcje gracza.
+    /// </summary>
     override
     protected void Actions()
     {
-        if (!Inputs.inGameMenu)
+        if (!Inputs.InGameMenu)
         {
             Jump();
-
-            if (Inputs.action && Inputs.isClimbing)              //    Warunki wywołania akcji wsponania.
-            {
-            }
 
             Move();
 
@@ -39,56 +37,52 @@ public class Player : Character
         }
     }
 
-    void Update()
+    private void Update()
     {
-        Inputs.isGrounded = Physics2D.OverlapCircle(IsOnGround.position, IsOnGroundRadius, Ground);
+        Inputs.IsGrounded = Physics2D.OverlapCircle(IsOnGround.position, IsOnGroundRadius, Ground);
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 30f);
         int enemiesCount = 0;
+
         foreach (Collider2D coll in enemies)
         {
             if (coll.gameObject.tag == "Enemy")
             {
                 ++enemiesCount;
+                break;
             }
         }
 
         if (enemiesCount > 0)
-            Inputs.inCombat = true;
+            Inputs.InCombat = true;
         else
-            Inputs.inCombat = false;
+            Inputs.InCombat = false;
 
-
-        if (Inputs.d_pad_y == 1f)
+        if (Inputs.DPadY == 1f)
             SelectedProjectile = 1;
 
-        if (Inputs.d_pad_y == -1f)
+        if (Inputs.DPadY == -1f)
             SelectedProjectile = 2;
 
-        if (Inputs.d_pad_x == 1f)
+        if (Inputs.DPadX == 1f)
             SelectedProjectile = 0;
-
-        //if (inputs.d_pad_x == -1f)
-        //    selectedProjetile = 2;
 
         Dies();
     }
-
-    /*
-     * Update wywołujacy się co stały interwał czasowy.
-     */
-
-    void FixedUpdate()
+    /// <summary>
+    /// 
+    /// </summary>
+    private void FixedUpdate()
     {
         Actions();
     }
 
     #region Kolizje
 
-    void OnCollisionEnter2D(Collision2D coll)
+    private void OnCollisionEnter2D(Collision2D coll)
     {
     }
 
-    void OnCollisionStay2D(Collision2D coll)
+    private void OnCollisionStay2D(Collision2D coll)
     {
         if (coll.gameObject.tag == "Enemy")
         {
@@ -97,11 +91,11 @@ public class Player : Character
         }
     }
 
-    void OnCollisionExit2D(Collision2D coll)
+    private void OnCollisionExit2D(Collision2D coll)
     {
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
+    private void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Wall")
         {
@@ -110,7 +104,7 @@ public class Player : Character
 
         if (coll.gameObject.tag == "Stairs")
         {
-            Inputs.isStairsClimbing = true;
+            Inputs.IsStairsClimbing = true;
         }
 
         if (coll.tag == "Projectile" && coll.name == "Enemy")
@@ -119,16 +113,16 @@ public class Player : Character
         }
     }
 
-    void OnTriggerStay2D(Collider2D coll)
+    private void OnTriggerStay2D(Collider2D coll)
     {
         LadderInteraction(coll);
     }
 
-    void OnTriggerExit2D(Collider2D coll)
+    private void OnTriggerExit2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Ladder")
         {
-            Inputs.isLadderClimbing = false;
+            Inputs.IsLadderClimbing = false;
             rigidbody2D.gravityScale = 1;
         }
 
@@ -138,10 +132,9 @@ public class Player : Character
         }
         if (coll.gameObject.tag == "Stairs")
         {
-            Inputs.isStairsClimbing = false;
+            Inputs.IsStairsClimbing = false;
         }
-
     }
 
-    #endregion
+    #endregion Kolizje
 }

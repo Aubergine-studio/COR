@@ -1,33 +1,38 @@
 ﻿using UnityEngine;
-using System.Collections;
 
+/// <summary>
+/// Interakcja z graczem
+/// </summary>
 public class Interaction : Behavior
 {
+    /// <summary>
+    /// Definicja zachowania.
+    /// </summary>
     public override void Behave()
     {
-        Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, brain.sight);
+        Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, Brain.Sight);
 
 
         foreach (Collider2D coll in collisions)
         {
             if (coll.tag == "Player")
             {
-                if (Mathf.Abs(coll.transform.position.x - brain.slave.ProjectileSpawn.transform.position.x) <=
-                brain.slave.ProjectileType[brain.slave.ProjectileIndex].GetComponent<Projectile>().projectileDistance)
+                if (Mathf.Abs(coll.transform.position.x - Brain.Slave.ProjectileSpawn.transform.position.x) <=
+                Brain.Slave.ProjectileType[Brain.Slave.ProjectileIndex].GetComponent<Projectile>().projectileDistance)
                 {
-                    brain.inputs.horizontalInput_left = 0;
-                    brain.inputs.fire = true;
+                    Brain.inputs.HorizontalInputLeft = 0;
+                    Brain.inputs.Fire = true;
                 }
                 else
                 {
-                    if (coll.transform.position.x < brain.transform.position.x)
+                    if (coll.transform.position.x < Brain.transform.position.x)
                     {
-                        brain.inputs.horizontalInput_left = -1f;
+                        Brain.inputs.HorizontalInputLeft = -1f;
                     }
 
-                    if (coll.transform.position.x > brain.transform.position.x)
+                    if (coll.transform.position.x > Brain.transform.position.x)
                     {
-                        brain.inputs.horizontalInput_left = 1f;
+                        Brain.inputs.HorizontalInputLeft = 1f;
                     }
                 }
                 Debug.Log("Player!");

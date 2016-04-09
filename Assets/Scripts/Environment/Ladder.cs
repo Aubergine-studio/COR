@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Ladder : UsableItem
 {
@@ -35,7 +34,7 @@ public class Ladder : UsableItem
 
             foreach (GameObject g in grounds)
             {
-                g.SetActive(!playerInputs.action);
+                g.SetActive(!playerInputs.Action);
             }
 
         }

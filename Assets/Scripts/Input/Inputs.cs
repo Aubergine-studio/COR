@@ -1,37 +1,39 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+/// <summary>
+/// Klasa przechowująca informacje o wejściach.
+/// Za jej pośrednictwem odbywa kierowanie się postacią.
+/// </summary>
 public class Inputs : MonoBehaviour
 {
 
-    public bool isFacingLeft = true;        //  Obracanie postaci.
-    public bool isGrounded = false;       	//  Czy postać jest uziemiona?
-    public bool isClimbing = false;       	//  Gotowość postaci do wspinaczki
+    public bool IsFacingLeft = true;        //  Obracanie postaci.
+    public bool IsGrounded = false;       	//  Czy postać jest uziemiona?
+    public bool IsClimbing = false;       	//  Gotowość postaci do wspinaczki
 
-    public bool isGetOnLadder = false;
-    public bool isLadderClimbing = false;   //  Wspinaczka po drabinie.
+    public bool IsGetOnLadder = false;
+    public bool IsLadderClimbing = false;   //  Wspinaczka po drabinie.
 
-    public bool isStairsClimbing = false;
+    public bool IsStairsClimbing = false;
 
-    public bool inCombat = false;
+    public bool InCombat = false;
 
     /*
      * Odczyt analogowy - Poruszanie się
      */
 
-    public float horizontalInput_left;       //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w poziomie.
-    public float verticalInput_left;         //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w pionie.
-    public float horizontalInput_right;       //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w poziomie.
-    public float verticalInput_right;         //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w pionie.
+    public float HorizontalInputLeft;       //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w poziomie.
+    public float VerticalInputLeft;         //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w pionie.
+    public float HorizontalInputRight;       //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w poziomie.
+    public float VerticalInputRight;         //  Odczyt gałki analogowej mówiący o tym jak mocno została ona wychylona w pionie.
 
-    public float d_pad_x;
-    public float d_pad_y;
+    public float DPadX;
+    public float DPadY;
     /*
      * Flagi, klawiszy.
      */
 
-    public bool jump = false;      //  Flaga skoku.
-    public bool fire = false;      //  Flaga ataku(w ręcz, na dystns).
-    public bool action = false;    //  Flaga akcji.
-    public bool inGameMenu = false;
+    public bool Jump = false;      //  Flaga skoku.
+    public bool Fire = false;      //  Flaga ataku(w ręcz, na dystns).
+    public bool Action = false;    //  Flaga akcji.
+    public bool InGameMenu = false;
 }

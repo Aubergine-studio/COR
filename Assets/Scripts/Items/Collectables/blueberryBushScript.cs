@@ -40,7 +40,7 @@ public class blueberryBushScript : Item
             if (_isFoll)
             {
                 base.PlayerInteraction(other);
-                if (other.GetComponent<Inputs>().action)
+                if (other.GetComponent<Inputs>().Action)
                 {
                     _isFoll = false;
                     _renderer.sprite = EmptySprite;

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class HumanoidAnimatorController : AnimatorController
 {
@@ -18,40 +17,40 @@ public class HumanoidAnimatorController : AnimatorController
 
     protected override void ControlAnimator()
     {
-        if (!Inputs.inGameMenu)
+        if (!Inputs.InGameMenu)
         {
             _animationStatus = Animator.GetCurrentAnimatorStateInfo(0);
 
-            if (Inputs.isGrounded && Inputs.horizontalInput_left == 0 && smokingTime <= 0)
+            if (Inputs.IsGrounded && Inputs.HorizontalInputLeft == 0 && smokingTime <= 0)
             {
                 smokingTime = SmokingInterval;
                 Animator.SetTrigger("Smoke");
             }
             else smokingTime -= Time.deltaTime;
-            if(Mathf.Abs(Inputs.horizontalInput_left) > 0)
+            if(Mathf.Abs(Inputs.HorizontalInputLeft) > 0)
             {
                 smokingTime = SmokingInterval;
             }
 
-            if (Inputs.fire)// && AttaksHash != animationStatus.nameHash)
+            if (Inputs.Fire)// && AttaksHash != animationStatus.nameHash)
             {
                 Debug.Log("Trigger animacji.");
                 Animator.SetTrigger("Fire");
                 Animator.SetFloat("Attack", Random.Range(1f, 2f));
                 Animator.SetFloat("Weapon", player.ProjectileIndex + 1);
-                Inputs.fire = false;
+                Inputs.Fire = false;
             }
 
-            Animator.SetBool("Ground", Inputs.isGrounded);
-            Animator.SetBool("LadderClimbing", Inputs.isLadderClimbing);
+            Animator.SetBool("Ground", Inputs.IsGrounded);
+            Animator.SetBool("LadderClimbing", Inputs.IsLadderClimbing);
 
-            if (Inputs.isGetOnLadder)
+            if (Inputs.IsGetOnLadder)
             {
                 Animator.SetTrigger("OnLadder");
-                Inputs.isGetOnLadder = false;
+                Inputs.IsGetOnLadder = false;
             }
             Animator.SetFloat("vSpeed", rigidbody2D.velocity.y);
-            Animator.SetFloat("Speed", Mathf.Abs(Inputs.horizontalInput_left));
+            Animator.SetFloat("Speed", Mathf.Abs(Inputs.HorizontalInputLeft));
 
             if (Chracter.Health <= 0)
             {
@@ -59,7 +58,7 @@ public class HumanoidAnimatorController : AnimatorController
                 this.enabled = false;
             }
 
-            if (Inputs.inCombat)
+            if (Inputs.InCombat)
                 Animator.SetFloat("Status", 1f);
             else
                 Animator.SetFloat("Status", 0f);

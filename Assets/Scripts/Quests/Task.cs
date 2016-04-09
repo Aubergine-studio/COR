@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
 public enum TaskType
 {
@@ -9,7 +9,7 @@ public enum TaskType
     talk = 3,
 }
 
-[System.Serializable]
+[Serializable]
 public abstract class Task : MonoBehaviour
 {
     public bool isDone = false;

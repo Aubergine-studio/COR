@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class InputCollector : MonoBehaviour
 {
@@ -28,60 +27,60 @@ public class InputCollector : MonoBehaviour
 
         #region AnallogInputs
 
-        _inputs.horizontalInput_left = Input.GetAxis("Horizontal");  //  Prawo/lewo
-        _inputs.verticalInput_left = Input.GetAxis("Vertical");
+        _inputs.HorizontalInputLeft = Input.GetAxis("Horizontal");  //  Prawo/lewo
+        _inputs.VerticalInputLeft = Input.GetAxis("Vertical");
 
-        _inputs.horizontalInput_right = Input.GetAxis("Horizontal_right");  //  Prawo/lewo
-        _inputs.verticalInput_right = Input.GetAxis("Vertical_right");
+        _inputs.HorizontalInputRight = Input.GetAxis("Horizontal_right");  //  Prawo/lewo
+        _inputs.VerticalInputRight = Input.GetAxis("Vertical_right");
 
 
         //inputs.horizontalInput = Input.GetAxis("Left analog X");  //  Prawo/lewo
         //inputs.verticalInput = Input.GetAxis("Left analog Y");
-        _inputs.d_pad_x = Input.GetAxis("D-Pad X");
-        _inputs.d_pad_y = Input.GetAxis("D-Pad Y");
+        _inputs.DPadX = Input.GetAxis("D-Pad X");
+        _inputs.DPadY = Input.GetAxis("D-Pad Y");
         
         #endregion
 
         if (Input.GetButtonDown("Attack") )     //  Atak
-            _inputs.fire = true;
+            _inputs.Fire = true;
 
         if (Input.GetButtonUp("Attack"))
-            _inputs.fire = false;
+            _inputs.Fire = false;
 
         if (Input.GetButtonDown("Jump") )     //  Atak
-            _inputs.jump = true;
+            _inputs.Jump = true;
 
         if (Input.GetButtonUp("Jump"))
-            _inputs.jump = false;
+            _inputs.Jump = false;
 
         if (Input.GetButtonDown("Use"))     //  Atak
-            _inputs.action  = true;
+            _inputs.Action  = true;
 
         if (Input.GetButtonUp("Use"))
-            _inputs.action = false;
+            _inputs.Action = false;
 
         if (Input.GetButtonDown("InGameMenu"))     //  Atak
-            _inputs.inGameMenu = !_inputs.inGameMenu;
+            _inputs.InGameMenu = !_inputs.InGameMenu;
    		
 		if (Input.GetKeyDown(KeyCode.Mouse0))      //  Atak
-			_inputs.fire = true;
+			_inputs.Fire = true;
 		
         if (Input.GetKeyUp(KeyCode.Mouse0))
-			_inputs.fire = false;
+			_inputs.Fire = false;
 		
 		
 		if (Input.GetKeyDown(KeyCode.E))     //  Akcja
-			_inputs.action = true;
+			_inputs.Action = true;
 		
 		if (Input.GetKeyUp(KeyCode.E))
-			_inputs.action = false;
+			_inputs.Action = false;
 		
 		
 		if (Input.GetKeyDown(KeyCode.Space))     //  Skok.
-			_inputs.jump = true;
+			_inputs.Jump = true;
 		
 		if (Input.GetKeyUp(KeyCode.Space))     
-			_inputs.jump = false;
+			_inputs.Jump = false;
 		
 		#endregion
 		

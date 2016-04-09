@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Stairs : UsableItem
 {
@@ -21,7 +20,7 @@ public class Stairs : UsableItem
             {
                 if (players[i].name == coll.name)
                 {
-                    if (playersInputs[i].action)
+                    if (playersInputs[i].Action)
                     {
                         stairsCollider.enabled = true;
                     }

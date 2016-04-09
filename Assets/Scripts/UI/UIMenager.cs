@@ -27,19 +27,19 @@ public class UIMenager : MonoBehaviour
     {
         Hp.value = Player.Health;
 
-        if (Inputs.d_pad_x == 1f)
+        if (Inputs.DPadX == 1f)
             DPad.sprite = DPadRight;
-        if (Inputs.d_pad_x == -1f)
+        if (Inputs.DPadX == -1f)
             DPad.sprite = DPadLeft;
 
-        if (Inputs.d_pad_y == 1f)
+        if (Inputs.DPadY == 1f)
             DPad.sprite = DPadUp;
-        if (Inputs.d_pad_y == -1f)
+        if (Inputs.DPadY == -1f)
             DPad.sprite = DPadDown;
 
-        if (Inputs.d_pad_y == 0f && Inputs.d_pad_x == 0f)
+        if (Inputs.DPadY == 0f && Inputs.DPadX == 0f)
             DPad.sprite = DPadNormal;
 
-        InGameMenu.SetActive(Inputs.inGameMenu);
+        InGameMenu.SetActive(Inputs.InGameMenu);
     }
 }

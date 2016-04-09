@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    /*
-     *  Dodatkowe elementy związane z sterowaniem postacią.
-     */
+    #region Sterowanie
+
     public Transform IsOnGround;                    //  Pozycja Obiektu wykrywajacego ziemie.
     public float IsOnGroundRadius = 0.2f;
     public LayerMask Ground;                    //  Maska pozwalajaca określić co jest "ziemią"
@@ -15,6 +12,8 @@ public abstract class Character : MonoBehaviour
     protected Animator Animator;                //  Animator postaci.   TMP do zastąpienia osobną klasa.
 
     protected AnimatorController AnimatorController;
+
+    #endregion Sterowanie
 
     public GameObject[] ProjectileType;
     public Transform ProjectileSpawn;
@@ -46,17 +45,8 @@ public abstract class Character : MonoBehaviour
 
     #endregion Parametry postaci
 
-    /*
-     *  Metody
-     */
-
     protected void Start()
     {
-        //projectileType = new GameObject[2];
-
-        //projectileType[0] = Resources.Load("Hit") as GameObject;
-        //projectileType[1] = Resources.Load("Knife") as GameObject;
-
         Animator = GetComponent<Animator>();
         Inputs = GetComponent<Inputs>();
         AnimatorController = GetComponent<AnimatorController>();
@@ -74,6 +64,9 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Dezaktywacja  wszystkich colliderów
+    /// </summary>
     protected void DisableAllColliders()
     {
         foreach (Collider2D coll in AllColliders)
@@ -82,46 +75,48 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    /*
-     * Funkcja obraca postać.
-     */
-
+    /// <summary>
+    /// Funkcja obracająca postać.
+    /// </summary>
     protected void Flip()
     {
-        Inputs.isFacingLeft = !Inputs.isFacingLeft;
+        Inputs.IsFacingLeft = !Inputs.IsFacingLeft;
 
-        Vector3 Flip = transform.localScale;
+        var flip = transform.localScale;
 
-        Flip.x *= -1;
+        flip.x *= -1;
 
-        transform.localScale = Flip;
+        transform.localScale = flip;
     }
 
-    /*
-     * Funkcja ataku.
-     */
-
+    /// <summary>
+    /// Atak.
+    /// </summary>
     protected void Attack()
     {
         if (_attackTimer == 0f)
         {
-            if (Inputs.fire)
+            if (Inputs.Fire)
             {
                 Debug.Log("Spawn pocisku.");
 
                 _attackTimer = AttackSpead;
 
-                Projectile clone = (Instantiate(ProjectileType[SelectedProjectile], ProjectileSpawn.position, ProjectileSpawn.localRotation) as GameObject).GetComponent<Projectile>();
-                if (Inputs.isFacingLeft)
+                var o = Instantiate(ProjectileType[SelectedProjectile], ProjectileSpawn.position, ProjectileSpawn.localRotation) as GameObject;
+                if (o != null)
                 {
-                    clone.moveDirection = -1.0f;
-                    Transform ctransform = clone.GetComponent<Transform>();
-                    ctransform.localScale = new Vector3(ctransform.localScale.x * -1, ctransform.localScale.y, ctransform.localScale.z);
-                }
-                else
-                    clone.moveDirection = 1.0f;
+                    Projectile clone = o.GetComponent<Projectile>();
+                    if (Inputs.IsFacingLeft)
+                    {
+                        clone.moveDirection = -1.0f;
+                        Transform ctransform = clone.GetComponent<Transform>();
+                        ctransform.localScale = new Vector3(ctransform.localScale.x * -1, ctransform.localScale.y, ctransform.localScale.z);
+                    }
+                    else
+                        clone.moveDirection = 1.0f;
 
-                clone.name = tag;
+                    clone.name = tag;
+                }
             }
         }
         else
@@ -129,78 +124,71 @@ public abstract class Character : MonoBehaviour
             _attackTimer -= Time.deltaTime;
             if (_attackTimer < 0)
                 _attackTimer = 0;
-            Inputs.fire = false;
+            Inputs.Fire = false;
         }
     }
 
-    /*
-     * Funkcja poruszania się.
-     */
+    #region Interkacje/Akcje
 
+    /// <summary>
+    /// Poruszanie się.
+    /// </summary>
     protected void Move()
     {
-        if ((Inputs.isGrounded && !Inputs.isLadderClimbing)
-                || !Inputs.isLadderClimbing)//&& !(a.nameHash == AttaksHash))                     //   Warunki wywołania akcji poruszania się.
+        if ((Inputs.IsGrounded && !Inputs.IsLadderClimbing)
+                || !Inputs.IsLadderClimbing)                     //   Warunki wywołania akcji poruszania się.
         {
-            rigidbody2D.velocity = new Vector2(Inputs.horizontalInput_left * MaxSpeed, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(Inputs.HorizontalInputLeft * MaxSpeed, rigidbody2D.velocity.y);
 
-            if (Inputs.horizontalInput_left < 0 && !Inputs.isFacingLeft)
+            if (Inputs.HorizontalInputLeft < 0 && !Inputs.IsFacingLeft)
                 Flip();
 
-            if (Inputs.horizontalInput_left > 0 && Inputs.isFacingLeft)
+            if (Inputs.HorizontalInputLeft > 0 && Inputs.IsFacingLeft)
                 Flip();
         }
     }
 
-    /*
-     * Funkcja Skoku.
-     */
-
+    /// <summary>
+    /// Skok
+    /// </summary>
     protected void Jump()
     {
-        if (Inputs.jump && Inputs.isGrounded)             //   Warunki wywołania akcji skoku.
+        if (Inputs.Jump && Inputs.IsGrounded)             //   Warunki wywołania akcji skoku.
         {
             rigidbody2D.AddForce(new Vector2(0, JumpForce));
-            Inputs.jump = false;
+            Inputs.Jump = false;
         }
     }
 
-    /*
-     * Funkcja wspinajaca.
-     */
-
-    protected void Climb()
-    {
-    }
-
+    /// <summary>
+    /// Wspinanie się po drabinie
+    /// </summary>
     protected void LadderClimb()
     {
-        if (Inputs.isLadderClimbing)
+        if (Inputs.IsLadderClimbing)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, Inputs.verticalInput_left * MaxSpeed);
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, Inputs.VerticalInputLeft * MaxSpeed);
         }
     }
-
-    /*
-     * Metoda odpowiadająca, za sterowanie postacią.
-     */
-
+    /// <summary>
+    /// Metoda definiująca zachowanie postaci. Implementowana dla każdego typu postaci(gracz, NPC, przeciwnik).
+    /// </summary>
     protected abstract void Actions();
 
-    /*
-     * Metody związane z interakcją.
-     */
-
+    /// <summary>
+    /// Interkacja z drabiną
+    /// </summary>
+    /// <param name="coll"> Referencja na obiekt, z którym wystąpiła kolizja.</param>
     protected void LadderInteraction(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Ladder" && Inputs.action && !Inputs.isLadderClimbing)
+        if (coll.gameObject.tag == "Ladder" && Inputs.Action && !Inputs.IsLadderClimbing)
         {
-            if (!Inputs.isLadderClimbing)
+            if (!Inputs.IsLadderClimbing)
             {
-                Inputs.isGetOnLadder = true;
+                Inputs.IsGetOnLadder = true;
             }
 
-            Inputs.isLadderClimbing = true;
+            Inputs.IsLadderClimbing = true;
 
             rigidbody2D.gravityScale = 0;
 
@@ -222,23 +210,25 @@ public abstract class Character : MonoBehaviour
                 Flip();
         }
 
-        if (coll.gameObject.tag == "Ladder" && !Inputs.action && Inputs.isLadderClimbing)
+        if (coll.gameObject.tag == "Ladder" && !Inputs.Action && Inputs.IsLadderClimbing)
         {
             rigidbody2D.gravityScale = 1;
-            Inputs.isLadderClimbing = false;
+            Inputs.IsLadderClimbing = false;
             Flip();
         }
     }
-
+    /// <summary>
+    /// Metoda śmierci postaci.
+    /// </summary>
     protected void Dies()
     {
-        if (Health <= 0)
-        {
-            DisableAllColliders();
-            rigidbody2D.gravityScale = 0;
-            rigidbody2D.velocity = Vector2.zero;
-            Animator.Play("Dies");
-            this.enabled = false;
-        }
+        if (!(Health <= 0)) return;
+        DisableAllColliders();
+        rigidbody2D.gravityScale = 0;
+        rigidbody2D.velocity = Vector2.zero;
+        Animator.Play("Dies");
+        this.enabled = false;
     }
+
+    #endregion Interkacje/Akcje
 }

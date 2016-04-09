@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
-
+/// <summary>
+/// Abstarkcyjna klasa zachowania.
+/// </summary>
 public abstract class Behavior : MonoBehaviour
 {
-    protected EnemyAI brain;
+    protected EnemyAI Brain;
 
-    public void Initialize(EnemyAI _brain)
+    public void Initialize(EnemyAI brain)
     {
-        this.brain = _brain;
+        Brain = brain;
     }
 
+    /// <summary>
+    /// Definicja zachowania.
+    /// </summary>
     public abstract void Behave();
 }
